@@ -15,7 +15,7 @@ const MainPage = () => {
       alignItems="center"
     >
       <Grid item>
-        <Title text={Content.title} />
+        <Title>{Content.title}</Title>
       </Grid>
       <Grid item className={classes.btn}>
         <ThemeButton color="secondary">{Content.startBtn}</ThemeButton>
