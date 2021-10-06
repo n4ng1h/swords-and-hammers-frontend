@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import { Typography } from '@material-ui/core';
 
-const Title = ({ text }) => {
-  return <Typography variant="h2">{text}</Typography>;
+const Title = ({ children }) => {
+  return <Typography variant="h2">{children}</Typography>;
 };
 
 Title.propTypes = {
-  text: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default Title;
