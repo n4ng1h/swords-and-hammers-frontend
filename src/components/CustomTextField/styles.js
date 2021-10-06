@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: 'no-repeat',
   },
   textField: {
-    paddingTop: '25px',
+    paddingTop: '28px',
     width: '22ch',
     '& .MuiInputBase-root': {
       color: 'white',
