@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable react/jsx-props-no-spreading */
 import PropTypes from 'prop-types';
 import { Grid, TextField, Typography } from '@material-ui/core';
@@ -5,7 +6,7 @@ import useStyles from './styles';
 
 const CustomTextField = (props) => {
   const classes = useStyles();
-  const { title, ...otherProps } = props;
+  const { title, maxLength, ...otherProps } = props;
 
   return (
     <Grid
@@ -23,6 +24,9 @@ const CustomTextField = (props) => {
             {...otherProps}
             className={classes.textField}
             InputProps={{ disableUnderline: true }}
+            inputProps={{
+              maxLength,
+            }}
           />
         </div>
       </Grid>
@@ -32,10 +36,12 @@ const CustomTextField = (props) => {
 
 CustomTextField.defaultProps = {
   title: null,
+  maxLength: null,
 };
 
 CustomTextField.propTypes = {
   title: PropTypes.string,
+  maxLength: PropTypes.number,
 };
 
 export default CustomTextField;
