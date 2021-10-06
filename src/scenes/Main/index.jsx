@@ -1,26 +1,37 @@
 import Title from 'components/Title';
-import ThemeButton from 'components/ThemeButton';
+import CustomButton from 'components/CustomButton';
+import CustomTextField from 'components/CustomTextField';
 import { Grid } from '@material-ui/core';
 import Content from 'content';
+import BUTTON_TYPE from 'constant';
 import useStyles from './styles';
 
 const MainPage = () => {
   const classes = useStyles();
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Grid item>
-        <Title text={Content.title} />
+    <div>
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        spacing={0}
+        className={classes.gridContainer}
+      >
+        <Grid item>
+          <Title text={Content.title} />
+        </Grid>
+        <Grid item className={classes.item}>
+          <CustomTextField title={Content.kingdomNameField} />
+        </Grid>
+        <Grid item className={classes.item}>
+          <CustomButton btnType={BUTTON_TYPE.NEXT}>
+            {Content.startBtn}
+          </CustomButton>
+        </Grid>
       </Grid>
-      <Grid item className={classes.btn}>
-        <ThemeButton color="secondary">{Content.startBtn}</ThemeButton>
-      </Grid>
-    </Grid>
+    </div>
   );
 };
 
