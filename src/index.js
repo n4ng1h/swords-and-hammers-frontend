@@ -1,12 +1,19 @@
+/* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import { BrowserRouter } from 'react-router-dom';
+import ViewProvider from 'providers/View';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <ViewProvider>
+        <App />
+      </ViewProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
