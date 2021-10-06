@@ -5,15 +5,13 @@ import routes from './routes';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <Switch>
-          {routes.map((routeObj) => (
-            <Route exact path={routeObj.path}>
-              {routeObj.component}
-            </Route>
-          ))}
-        </Switch>
-      </header>
+      <Switch>
+        {routes.map((routeObj) => (
+          <Route key={routeObj.path} exact path={routeObj.path}>
+            {routeObj.component}
+          </Route>
+        ))}
+      </Switch>
     </div>
   );
 }
