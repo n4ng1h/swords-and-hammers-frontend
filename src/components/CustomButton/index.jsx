@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import clsx from 'clsx';
 import BUTTON_TYPE from 'constant';
 import useStyles from './styles';

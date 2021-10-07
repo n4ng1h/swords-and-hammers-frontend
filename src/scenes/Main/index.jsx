@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Title from 'components/Title';
 import CustomButton from 'components/CustomButton';
 import CustomTextField from 'components/CustomTextField';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import Content from 'content';
 import BUTTON_TYPE from 'constant';
 import isKingdomNameValid from 'services/validation';
@@ -41,7 +41,7 @@ const MainPage = () => {
         className={classes.gridContainer}
       >
         <Grid item>
-          <Title text={Content.title} />
+          <Title>{Content.title}</Title>
         </Grid>
         <Grid item className={classes.item}>
           <CustomTextField
