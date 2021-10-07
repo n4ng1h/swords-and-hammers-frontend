@@ -4,7 +4,7 @@ import CustomButton from 'components/CustomButton';
 import CustomTextField from 'components/CustomTextField';
 import { Grid } from '@mui/material';
 import Content from 'content';
-import BUTTON_TYPE from 'constant';
+import { BUTTON_TYPE } from 'constant';
 import isKingdomNameValid from 'services/validation';
 import styles from './styles';
 
