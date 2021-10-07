@@ -20,6 +20,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
     marginBottom: theme.spacing(1),
   },
+  errorMsg: {
+    color: 'red',
+    paddingTop: '5px',
+    paddingLeft: '20px',
+    paddingRight: '20px',
+  },
 }));
 
 export default useStyles;

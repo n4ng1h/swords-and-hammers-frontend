@@ -6,7 +6,7 @@ import useStyles from './styles';
 
 const CustomTextField = (props) => {
   const classes = useStyles();
-  const { title, maxLength, ...otherProps } = props;
+  const { title, errorMsg, maxLength, ...otherProps } = props;
 
   return (
     <Grid
@@ -30,6 +30,9 @@ const CustomTextField = (props) => {
           />
         </div>
       </Grid>
+      <Grid item className={classes.errorMsg}>
+        <Typography variant="body1">{errorMsg}</Typography>
+      </Grid>
     </Grid>
   );
 };
@@ -37,11 +40,13 @@ const CustomTextField = (props) => {
 CustomTextField.defaultProps = {
   title: null,
   maxLength: null,
+  errorMsg: null,
 };
 
 CustomTextField.propTypes = {
   title: PropTypes.string,
   maxLength: PropTypes.number,
+  errorMsg: PropTypes.string,
 };
 
 export default CustomTextField;
