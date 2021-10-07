@@ -23,7 +23,7 @@ const MainPage = () => {
     if (isKingdomNameValid(kingdomName)) {
       resetErrorMsg();
       // If it is valid, we proceed to the next step
-      // API call to submit user details to backend
+      // TODO: API call to submit user details to backend
     } else {
       // Display error to the user
       setErrorMsg(Content.invalidKingdomName);
