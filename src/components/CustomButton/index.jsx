@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import BUTTON_TYPE from 'constant';
+import { BUTTON_TYPE } from 'constant';
 import styles from './styles';
 
 /**
