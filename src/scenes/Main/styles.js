@@ -1,8 +1,11 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-  btn: {
-    marginTop: theme.spacing(3),
+  gridContainer: {
+    height: '100vh',
+  },
+  item: {
+    marginTop: theme.spacing(10),
   },
 }));
 
