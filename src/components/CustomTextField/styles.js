@@ -1,7 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles';
 import TextFieldImage from 'assets/images/textfields/text-field.png';
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   textFieldContainer: {
     color: 'white',
     minWidth: '32ch',
@@ -18,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   title: {
-    marginBottom: theme.spacing(1),
+    marginBottom: 1,
   },
   errorMsg: {
     color: 'red',
@@ -26,6 +25,6 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '20px',
     paddingRight: '20px',
   },
-}));
+};
 
-export default useStyles;
+export default styles;

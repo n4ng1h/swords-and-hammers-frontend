@@ -1,26 +1,22 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
-import clsx from 'clsx';
-import BUTTON_TYPE from 'constant';
-import useStyles from './styles';
+import { Button } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { BUTTON_TYPE } from 'constant';
+import styles from './styles';
 
-const CustomButton = (props) => {
-  const classes = useStyles();
-  const { btnType, ...otherProps } = props;
+/**
+ * shouldForwardProp determines if we should pass a given prop
+ * to the component, in this case, Button.
+ *
+ * In this case, we don't want to pass the btnType prop to the
+ * underlying <button> element used by the Button component.
+ *
+ * We only use it to dynamically determine styles
+ */
 
-  return (
-    <Button
-      {...otherProps}
-      className={clsx({
-        [classes.nextBtn]: btnType === BUTTON_TYPE.NEXT,
-      })}
-    />
-  );
-};
-
-CustomButton.propTypes = {
-  btnType: PropTypes.string.isRequired,
-};
+const CustomButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== 'btnType',
+})(({ btnType }) => ({
+  ...(btnType === BUTTON_TYPE.NEXT && styles.nextBtn),
+}));
 
 export default CustomButton;

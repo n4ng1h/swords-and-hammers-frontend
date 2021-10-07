@@ -1,5 +1,5 @@
-const BUTTON_TYPE = {
+export const BUTTON_TYPE = {
   NEXT: 'NEXT',
 };
 
-export default BUTTON_TYPE;
+export const DEFAULT_ROUND_DISPLAY = '0 / 999';

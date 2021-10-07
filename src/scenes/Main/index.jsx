@@ -2,14 +2,13 @@ import { useState } from 'react';
 import Title from 'components/Title';
 import CustomButton from 'components/CustomButton';
 import CustomTextField from 'components/CustomTextField';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import Content from 'content';
-import BUTTON_TYPE from 'constant';
+import { BUTTON_TYPE } from 'constant';
 import isKingdomNameValid from 'services/validation';
-import useStyles from './styles';
+import styles from './styles';
 
 const MainPage = () => {
-  const classes = useStyles();
   // eslint-disable-next-line no-unused-vars
   const [kingdomName, setKingdomName] = useState('');
   // eslint-disable-next-line no-unused-vars
@@ -38,12 +37,12 @@ const MainPage = () => {
         justifyContent="center"
         alignItems="center"
         spacing={0}
-        className={classes.gridContainer}
+        sx={styles.gridContainer}
       >
         <Grid item>
-          <Title text={Content.title} />
+          <Title>{Content.title}</Title>
         </Grid>
-        <Grid item className={classes.item}>
+        <Grid item sx={styles.item}>
           <CustomTextField
             title={Content.kingdomNameField}
             onChange={(e) => {
@@ -53,7 +52,7 @@ const MainPage = () => {
             errorMsg={errorMsg}
           />
         </Grid>
-        <Grid item className={classes.item}>
+        <Grid item sx={styles.item}>
           <CustomButton btnType={BUTTON_TYPE.NEXT} onClick={handleStartGame}>
             {Content.startBtn}
           </CustomButton>

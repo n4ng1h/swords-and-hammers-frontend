@@ -1,11 +1,10 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable react/jsx-props-no-spreading */
 import PropTypes from 'prop-types';
-import { Grid, TextField, Typography } from '@material-ui/core';
-import useStyles from './styles';
+import { Container, Grid, TextField, Typography } from '@mui/material';
+import styles from './styles';
 
 const CustomTextField = (props) => {
-  const classes = useStyles();
   const { title, errorMsg, maxLength, ...otherProps } = props;
 
   return (
@@ -15,22 +14,23 @@ const CustomTextField = (props) => {
       justifyContent="center"
       alignItems="flex-start"
     >
-      <Grid item className={classes.title}>
+      <Grid item sx={styles.title}>
         <Typography variant="h5">{title}</Typography>
       </Grid>
       <Grid item>
-        <div className={classes.textFieldContainer}>
+        <Container sx={styles.textFieldContainer}>
           <TextField
             {...otherProps}
-            className={classes.textField}
+            sx={styles.textField}
+            variant="standard"
             InputProps={{ disableUnderline: true }}
             inputProps={{
               maxLength,
             }}
           />
-        </div>
+        </Container>
       </Grid>
-      <Grid item className={classes.errorMsg}>
+      <Grid item sx={styles.errorMsg}>
         <Typography variant="body1">{errorMsg}</Typography>
       </Grid>
     </Grid>

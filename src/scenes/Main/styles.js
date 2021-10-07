@@ -1,12 +1,10 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
+const styles = {
   gridContainer: {
     height: '100vh',
   },
   item: {
-    marginTop: theme.spacing(10),
+    marginTop: 10,
   },
-}));
+};
 
-export default useStyles;
+export default styles;
