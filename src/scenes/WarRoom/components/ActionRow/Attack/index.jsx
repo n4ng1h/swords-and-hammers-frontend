@@ -3,7 +3,13 @@ import AttackImage from 'assets/images/buttons/attack.png';
 import Content from 'content';
 
 const AttackKingdom = () => {
-  return <Action btnImg={AttackImage} btnCaption={Content.action.attack} />;
+  return (
+    <Action
+      btnImg={AttackImage}
+      btnCaption={Content.action.attack}
+      disableNumOwned
+    />
+  );
 };
 
 export default AttackKingdom;

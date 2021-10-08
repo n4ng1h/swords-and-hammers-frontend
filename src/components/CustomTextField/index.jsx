@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable react/jsx-props-no-spreading */
 import PropTypes from 'prop-types';
-import { Container, Grid, TextField, Typography } from '@mui/material';
+import { Box, Grid, TextField, Typography } from '@mui/material';
 import styles from './styles';
 
 const CustomTextField = (props) => {
@@ -18,7 +18,7 @@ const CustomTextField = (props) => {
         <Typography variant="h5">{title}</Typography>
       </Grid>
       <Grid item>
-        <Container sx={styles.textFieldContainer}>
+        <Box sx={styles.textFieldContainer}>
           <TextField
             {...otherProps}
             sx={styles.textField}
@@ -28,7 +28,7 @@ const CustomTextField = (props) => {
               maxLength,
             }}
           />
-        </Container>
+        </Box>
       </Grid>
       <Grid item sx={styles.errorMsg}>
         <Typography variant="body1">{errorMsg}</Typography>

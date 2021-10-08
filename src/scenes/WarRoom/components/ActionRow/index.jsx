@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types';
 import { Grid } from '@mui/material';
 import BuildVillage from 'scenes/WarRoom/components/ActionRow/BuildVillage';
 import BuildCastle from 'scenes/WarRoom/components/ActionRow/BuildCastle';
 import TrainArmy from 'scenes/WarRoom/components/ActionRow/TrainArmy';
 import AttackKingdom from 'scenes/WarRoom/components/ActionRow/Attack';
 
-const ActionRow = () => {
+const ActionRow = ({ resources }) => {
   const BUTTON_SPACING_COL = 6;
   const BUTTON_SPACING_ROW = 2;
 
@@ -12,15 +13,15 @@ const ActionRow = () => {
     <Grid container direction="column" spacing={BUTTON_SPACING_COL}>
       <Grid container item direction="row" spacing={BUTTON_SPACING_ROW}>
         <Grid item>
-          <BuildVillage />
+          <BuildVillage numOwned={resources.village} />
         </Grid>
         <Grid item>
-          <BuildCastle />
+          <BuildCastle numOwned={resources.castle} />
         </Grid>
       </Grid>
       <Grid container item direction="row" spacing={BUTTON_SPACING_ROW}>
         <Grid item>
-          <TrainArmy />
+          <TrainArmy numOwned={resources.army} />
         </Grid>
         <Grid item>
           <AttackKingdom />
@@ -28,6 +29,14 @@ const ActionRow = () => {
       </Grid>
     </Grid>
   );
+};
+
+ActionRow.propTypes = {
+  resources: PropTypes.shape({
+    village: PropTypes.number.isRequired,
+    castle: PropTypes.number.isRequired,
+    army: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default ActionRow;
