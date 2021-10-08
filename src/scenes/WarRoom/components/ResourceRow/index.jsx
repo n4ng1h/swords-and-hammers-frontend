@@ -4,6 +4,7 @@ import OwnedResource from 'components/OwnedResource';
 import LumberImage from 'assets/images/resources/lumber.png';
 import SteelImage from 'assets/images/resources/steel.png';
 import GoldImage from 'assets/images/resources/gold.png';
+import Content from 'content';
 
 const ResourceRow = ({ resourceOwned }) => {
   return (
@@ -18,18 +19,21 @@ const ResourceRow = ({ resourceOwned }) => {
         <OwnedResource
           resourceImg={LumberImage}
           numResource={resourceOwned.lumber}
+          resourceAlt={Content.images.altText.lumber}
         />
       </Grid>
       <Grid item>
         <OwnedResource
           resourceImg={SteelImage}
           numResource={resourceOwned.steel}
+          resourceAlt={Content.images.altText.steel}
         />
       </Grid>
       <Grid item>
         <OwnedResource
           resourceImg={GoldImage}
           numResource={resourceOwned.gold}
+          resourceAlt={Content.images.altText.gold}
         />
       </Grid>
     </Grid>
