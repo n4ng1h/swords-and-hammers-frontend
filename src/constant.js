@@ -17,3 +17,8 @@ export const BUILT_RESOURCES_TEMPLATE = {
   army: 0,
 };
 Object.freeze(BUILT_RESOURCES_TEMPLATE);
+
+export const ROUTE_PATH = {
+  main: '/',
+  warroom: '/warroom',
+};

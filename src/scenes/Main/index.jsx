@@ -1,14 +1,16 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Title from 'components/Title';
 import CustomButton from 'components/CustomButton';
 import CustomTextField from 'components/CustomTextField';
 import { Grid } from '@mui/material';
 import Content from 'content';
-import { BUTTON_TYPE } from 'constant';
+import { BUTTON_TYPE, ROUTE_PATH } from 'constant';
 import isKingdomNameValid from 'services/validation';
 import styles from './styles';
 
 const MainPage = () => {
+  const history = useHistory();
   // eslint-disable-next-line no-unused-vars
   const [kingdomName, setKingdomName] = useState('');
   // eslint-disable-next-line no-unused-vars
@@ -23,6 +25,7 @@ const MainPage = () => {
       resetErrorMsg();
       // If it is valid, we proceed to the next step
       // TODO: API call to submit user details to backend
+      history.push(ROUTE_PATH.warroom);
     } else {
       // Display error to the user
       setErrorMsg(Content.invalidKingdomName);
