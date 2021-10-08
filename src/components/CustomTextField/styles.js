@@ -9,6 +9,9 @@ const styles = {
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
   },
+  textFieldTitle: {
+    color: 'white',
+  },
   textField: {
     paddingTop: '26px',
     paddingLeft: 6,
@@ -20,11 +23,15 @@ const styles = {
   title: {
     marginBottom: 1,
   },
-  errorMsg: {
-    color: 'red',
+  errorMsgContainer: {
+    color: 'white',
     paddingTop: '5px',
     paddingLeft: '20px',
     paddingRight: '20px',
+    marginLeft: '20px',
+  },
+  errorMsg: {
+    minHeight: '24px',
   },
 };
 
