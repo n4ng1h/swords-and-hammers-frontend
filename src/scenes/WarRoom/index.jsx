@@ -2,6 +2,7 @@ import { Container, Grid } from '@mui/material';
 import HeaderRow from 'scenes/WarRoom/components/HeaderRow';
 import KingdomTitle from 'components/KingdomTitle';
 import ResourceRow from 'scenes/WarRoom/components/ResourceRow';
+import EventLog from 'scenes/WarRoom/components/EventLog';
 import ActionRow from 'scenes/WarRoom/components/ActionRow';
 import styles from './styles';
 
@@ -24,6 +25,9 @@ const WarRoomPage = () => {
         </Grid>
         <Grid item>
           <ResourceRow />
+        </Grid>
+        <Grid item>
+          <EventLog />
         </Grid>
         <Grid item sx={styles.actionControls}>
           <ActionRow />
