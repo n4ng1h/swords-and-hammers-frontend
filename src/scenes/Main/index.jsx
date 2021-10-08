@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Title from 'components/Title';
 import CustomButton from 'components/CustomButton';
 import CustomTextField from 'components/CustomTextField';
+import Loading from 'components/Loading';
 import { Grid } from '@mui/material';
 import Content from 'content';
 import { BUTTON_TYPE, ROUTE_PATH } from 'constant';
@@ -18,14 +20,20 @@ const MainPage = () => {
   const resetErrorMsg = () => {
     setErrorMsg('');
   };
+  const [isPageLoading, setIsPageLoading] = useState(false);
 
   // eslint-disable-next-line no-unused-vars
   const handleStartGame = () => {
     if (isKingdomNameValid(kingdomName)) {
+      // Set the page to loading while we wait for a response from the server
+      setIsPageLoading(true);
+      // Disable the button
       resetErrorMsg();
       // If it is valid, we proceed to the next step
       // TODO: API call to submit user details to backend
       history.push(ROUTE_PATH.warroom);
+      // Remove the backdrop loader
+      setIsPageLoading(false);
     } else {
       // Display error to the user
       setErrorMsg(Content.invalidKingdomName);
@@ -34,6 +42,7 @@ const MainPage = () => {
 
   return (
     <div>
+      <Loading open={isPageLoading} msg="Loading" />
       <Grid
         container
         direction="column"
@@ -56,7 +65,11 @@ const MainPage = () => {
           />
         </Grid>
         <Grid item sx={styles.item}>
-          <CustomButton btnType={BUTTON_TYPE.NEXT} onClick={handleStartGame}>
+          <CustomButton
+            btnType={BUTTON_TYPE.NEXT}
+            onClick={handleStartGame}
+            disabled={isPageLoading}
+          >
             {Content.startBtn}
           </CustomButton>
         </Grid>
