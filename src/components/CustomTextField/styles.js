@@ -10,7 +10,8 @@ const styles = {
     backgroundRepeat: 'no-repeat',
   },
   textField: {
-    paddingTop: '28px',
+    paddingTop: '26px',
+    paddingLeft: 6,
     width: '22ch',
     '& .MuiInputBase-root': {
       color: 'white',
