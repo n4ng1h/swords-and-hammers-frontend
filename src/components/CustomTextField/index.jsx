@@ -15,7 +15,9 @@ const CustomTextField = (props) => {
       alignItems="flex-start"
     >
       <Grid item sx={styles.title}>
-        <Typography variant="h5">{title}</Typography>
+        <Typography variant="h5" sx={styles.textFieldTitle}>
+          {title}
+        </Typography>
       </Grid>
       <Grid item>
         <Box sx={styles.textFieldContainer}>
@@ -30,8 +32,10 @@ const CustomTextField = (props) => {
           />
         </Box>
       </Grid>
-      <Grid item sx={styles.errorMsg}>
-        <Typography variant="body1">{errorMsg}</Typography>
+      <Grid item sx={styles.errorMsgContainer}>
+        <Typography variant="body1" sx={styles.errorMsg}>
+          {errorMsg}
+        </Typography>
       </Grid>
     </Grid>
   );

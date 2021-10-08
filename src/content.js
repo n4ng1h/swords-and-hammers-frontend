@@ -1,6 +1,6 @@
 const Content = {
   title: 'Kingdom',
-  kingdomNameField: 'Kingdom name:',
+  kingdomNameField: 'Your kingdom name:',
   startBtn: 'Start',
   invalidKingdomName: 'Please enter a non-empty name.',
   roundTitle: 'Round',
