@@ -5,6 +5,7 @@ import ResourceRow from 'scenes/WarRoom/components/ResourceRow';
 import ActionRow from 'scenes/WarRoom/components/ActionRow';
 import styles from './styles';
 
+// TODO: Create a state to listen for and update the number of user owned resources
 const WarRoomPage = () => {
   return (
     <Container>
@@ -13,7 +14,7 @@ const WarRoomPage = () => {
         direction="column"
         justifyContent="flex-start"
         alignItems="center"
-        spacing={4}
+        spacing={2}
       >
         <Grid item sx={styles.statsControls}>
           <HeaderRow />
@@ -24,7 +25,7 @@ const WarRoomPage = () => {
         <Grid item>
           <ResourceRow />
         </Grid>
-        <Grid item>
+        <Grid item sx={styles.actionControls}>
           <ActionRow />
         </Grid>
       </Grid>
