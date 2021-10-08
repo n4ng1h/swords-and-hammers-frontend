@@ -8,7 +8,7 @@ const BuildCastle = () => {
     <Action
       btnImg={CastleImage}
       btnCaption={Content.action.buildCastle}
-      resources={{ lumber: -12, steel: -10, gold: 25 }}
+      resourceCost={{ lumber: -12, steel: -10, gold: 25 }}
     />
   );
 };

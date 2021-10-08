@@ -7,7 +7,7 @@ import styles from './styles';
 
 const ActionButton = styled(ButtonBase)(() => styles.btn);
 
-const Action = ({ btnImg, btnCaption, resources, numOwned, onClick }) => {
+const Action = ({ btnImg, btnCaption, resourceCost, numOwned, onClick }) => {
   return (
     <ActionButton onClick={onClick}>
       <Grid container direction="column">
@@ -22,7 +22,7 @@ const Action = ({ btnImg, btnCaption, resources, numOwned, onClick }) => {
           </Box>
         </Grid>
         <Grid item>
-          <ActionResources resources={resources} />
+          <ActionResources resourceCost={resourceCost} />
         </Grid>
       </Grid>
     </ActionButton>
@@ -31,13 +31,13 @@ const Action = ({ btnImg, btnCaption, resources, numOwned, onClick }) => {
 
 Action.defaultProps = {
   onClick: null,
-  resources: null,
+  resourceCost: null,
 };
 
 Action.propTypes = {
   btnImg: PropTypes.string.isRequired,
   btnCaption: PropTypes.string.isRequired,
-  resources: PropTypes.shape({
+  resourceCost: PropTypes.shape({
     steel: PropTypes.number.isRequired,
     lumber: PropTypes.number.isRequired,
     gold: PropTypes.number.isRequired,

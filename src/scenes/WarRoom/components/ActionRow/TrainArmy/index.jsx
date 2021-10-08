@@ -8,7 +8,7 @@ const TrainArmy = () => {
     <Action
       btnImg={ArmyImage}
       btnCaption={Content.action.trainArmy}
-      resources={{ lumber: -3, steel: -3, gold: 0 }}
+      resourceCost={{ lumber: -3, steel: -3, gold: 0 }}
     />
   );
 };

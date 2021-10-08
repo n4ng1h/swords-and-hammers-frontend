@@ -7,7 +7,7 @@ import GoldImage from 'assets/images/resources/gold.png';
 import Content from 'content';
 import styles from './styles';
 
-const ActionResources = ({ resources }) => {
+const ActionResources = ({ resourceCost }) => {
   const formatNumberDisplay = (num) => {
     if (num > 0) {
       return `+${num}`;
@@ -18,7 +18,7 @@ const ActionResources = ({ resources }) => {
 
   return (
     <Box sx={styles.container}>
-      {resources ? (
+      {resourceCost ? (
         <Grid
           container
           direction="row"
@@ -26,34 +26,40 @@ const ActionResources = ({ resources }) => {
           alignItems="center"
           sx={styles.gridContainer}
         >
-          {resources.lumber ? (
+          {resourceCost.lumber ? (
             <Grid item>
               <img
                 alt={Content.images.altText.lumber}
                 src={LumberImage}
                 style={styles.imgLumber}
               />
-              <p style={styles.text}>{formatNumberDisplay(resources.lumber)}</p>
+              <p style={styles.text}>
+                {formatNumberDisplay(resourceCost.lumber)}
+              </p>
             </Grid>
           ) : null}
-          {resources.steel ? (
+          {resourceCost.steel ? (
             <Grid item>
               <img
                 alt={Content.images.altText.steel}
                 src={SteelImage}
                 style={styles.imgSteel}
               />
-              <p style={styles.text}>{formatNumberDisplay(resources.steel)}</p>
+              <p style={styles.text}>
+                {formatNumberDisplay(resourceCost.steel)}
+              </p>
             </Grid>
           ) : null}
-          {resources.gold ? (
+          {resourceCost.gold ? (
             <Grid item>
               <img
                 alt={Content.images.altText.gold}
                 src={GoldImage}
                 style={styles.imgGold}
               />
-              <p style={styles.text}>{formatNumberDisplay(resources.gold)}</p>
+              <p style={styles.text}>
+                {formatNumberDisplay(resourceCost.gold)}
+              </p>
             </Grid>
           ) : null}
         </Grid>
@@ -65,11 +71,11 @@ const ActionResources = ({ resources }) => {
 };
 
 ActionResources.defaultProps = {
-  resources: null,
+  resourceCost: null,
 };
 
 ActionResources.propTypes = {
-  resources: PropTypes.shape({
+  resourceCost: PropTypes.shape({
     steel: PropTypes.number.isRequired,
     lumber: PropTypes.number.isRequired,
     gold: PropTypes.number.isRequired,
