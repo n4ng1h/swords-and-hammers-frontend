@@ -20,8 +20,15 @@ const Content = {
     },
   },
   noCostText: 'No cost',
-  closeBtn: 'X',
   attackBtn: 'Attack',
+  kingdomConjugate: ' has:',
+  fetchingOppStats: 'Retrieving opponent stats...',
+  resource: {
+    village: 'Villages',
+    castle: 'Castles',
+    army: 'Armies',
+    winProb: 'Chance of Winning',
+  },
 };
 
 export default Content;

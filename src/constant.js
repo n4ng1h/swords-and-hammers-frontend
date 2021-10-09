@@ -24,3 +24,12 @@ export const ROUTE_PATH = {
   main: '/',
   warroom: '/warroom',
 };
+
+export const OPPONENT_STATS_TEMPLATE = {
+  kingdomName: 'KINGDOM_NAME_HERE',
+  village: -1,
+  castle: -1,
+  army: -1,
+  winProb: 0,
+};
+Object.freeze(OPPONENT_STATS_TEMPLATE);
