@@ -12,6 +12,7 @@ const styles = {
   },
   gridItem: {
     textAlign: 'center',
+    margin: 'auto',
   },
   text: {
     color: 'white',

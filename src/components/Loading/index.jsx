@@ -12,7 +12,7 @@ const Loading = ({ open, msg }) => {
         alignContent="center"
         spacing={4}
       >
-        <Grid item>
+        <Grid item sx={styles.gridItem}>
           <Skeleton variant="circular" sx={styles.blinkDot} />
           <Skeleton variant="circular" sx={styles.blinkDot} />
           <Skeleton variant="circular" sx={styles.blinkDot} />

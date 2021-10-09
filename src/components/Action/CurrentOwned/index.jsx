@@ -14,7 +14,7 @@ const CurrentOwned = ({ disableNumOwned, numOwned }) => {
   return (
     <CustomResourceDisplay disableNumOwned={disableNumOwned} elevation={0}>
       {disableNumOwned ? null : (
-        <Typography sx={styles.text}>{`You have: ${numOwned}`}</Typography>
+        <Typography sx={styles.text} variant="h4">{`${numOwned}`}</Typography>
       )}
     </CustomResourceDisplay>
   );
