@@ -1,18 +1,53 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Action from 'components/Action';
-import ListDialog from 'components/ListDialog';
+import Loading from 'components/Loading';
 import AttackImage from 'assets/images/buttons/attack.png';
 import Content from 'content';
+import { OPPONENT_STATS_TEMPLATE } from 'constant';
+import AttackList from './AttackList';
+import PreAttack from './PreAttack';
 
 const AttackKingdom = ({ numOwned }) => {
-  const [isAttackDialogOpen, setIsAttackDialogOpen] = useState(false);
-  const handleOpenDialog = () => {
-    setIsAttackDialogOpen(true);
+  const [isAttackListOpen, setAttackListOpen] = useState(false);
+  const handleOpenAttackList = () => {
+    setAttackListOpen(true);
   };
-  const handleCloseDialog = () => {
-    setIsAttackDialogOpen(false);
+  const handleCloseAttackList = () => {
+    setAttackListOpen(false);
   };
+
+  const [isPreAttackOpen, setPreAttackOpen] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const handleOpenPreAttack = () => {
+    setPreAttackOpen(true);
+  };
+  const handleClosePreAttack = () => {
+    setPreAttackOpen(false);
+  };
+
+  const [isLoading, setIsLoading] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [oppStats, setOppStats] = useState(OPPONENT_STATS_TEMPLATE);
+
+  // eslint-disable-next-line no-unused-vars
+  const checkPreAttackStats = (playerId) => {
+    // Close the AttackList
+    handleCloseAttackList();
+    // Set page to loading
+    setIsLoading(true);
+    // TODO: Fetch opponent stats from server
+    // TODO: Update the opponent stats from the fetched server data
+    // Remove the loading screen
+    setIsLoading(false);
+    // Open the PreAttack dialog
+    handleOpenPreAttack();
+  };
+
+  useEffect(() => {
+    // TODO: Retrieve the player list
+  });
+
   const TEST_DATA = [
     { playerName: 'George Washington', id: '12345' },
     { playerName: 'Samantha Goh', id: '11223342' },
@@ -36,17 +71,24 @@ const AttackKingdom = ({ numOwned }) => {
 
   return (
     <div>
-      <ListDialog
-        open={isAttackDialogOpen}
-        closeDialog={handleCloseDialog}
+      <Loading open={isLoading} msg={Content.fetchingOppStats} />
+      <PreAttack
+        open={isPreAttackOpen}
+        closeDialog={handleClosePreAttack}
+        oppStats={oppStats}
+      />
+      <AttackList
+        open={isAttackListOpen}
+        closeDialog={handleCloseAttackList}
         contentArray={TEST_DATA}
+        nextStep={checkPreAttackStats}
       />
       <Action
         btnImg={AttackImage}
         btnCaption={Content.action.attack}
         disableNumOwned
         disabled={numOwned <= 0}
-        onClick={handleOpenDialog}
+        onClick={handleOpenAttackList}
       />
     </div>
   );
