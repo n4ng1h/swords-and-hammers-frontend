@@ -15,11 +15,12 @@ const Action = ({
   numOwned,
   onClick,
   disableNumOwned,
+  disabled,
 }) => {
   return (
     <Box>
       <CurrentOwned disableNumOwned={disableNumOwned} numOwned={numOwned} />
-      <ActionButton onClick={onClick}>
+      <ActionButton onClick={onClick} disabled={disabled}>
         <Grid container direction="column">
           <Grid item>
             <Box sx={styles.board}>
@@ -45,6 +46,7 @@ Action.defaultProps = {
   resourceCost: null,
   disableNumOwned: false,
   numOwned: null,
+  disabled: false,
 };
 
 Action.propTypes = {
@@ -58,6 +60,7 @@ Action.propTypes = {
   numOwned: PropTypes.number,
   onClick: PropTypes.func,
   disableNumOwned: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 
 export default Action;
