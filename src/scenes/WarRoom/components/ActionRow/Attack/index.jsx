@@ -48,6 +48,8 @@ const AttackKingdom = ({ numOwned }) => {
     handleOpenPreAttack();
   };
 
+  // eslint-disable-next-line no-unused-vars
+  const [playerList, setPlayerList] = useState([]);
   useEffect(() => {
     // TODO: Retrieve the player list
   });
@@ -81,27 +83,6 @@ const AttackKingdom = ({ numOwned }) => {
     handleOpenInfoDialog();
   };
 
-  const TEST_DATA = [
-    { playerName: 'George Washington', id: '12345' },
-    { playerName: 'Samantha Goh', id: '11223342' },
-    { playerName: 'George Washington', id: '12346' },
-    { playerName: 'Samantha Goh', id: '11223341' },
-    { playerName: 'George Washington', id: '12347' },
-    { playerName: 'Samantha Goh', id: '11223340' },
-    { playerName: 'George Washington', id: '12348' },
-    { playerName: 'Samantha Goh', id: '11223349' },
-    { playerName: 'George Washington', id: '12349' },
-    { playerName: 'Samantha Goh', id: '11223348' },
-    { playerName: 'George Washington', id: '123410' },
-    { playerName: 'Samantha Goh', id: '11223347' },
-    { playerName: 'George Washington', id: '123411' },
-    { playerName: 'Samantha Goh', id: '11223346' },
-    { playerName: 'George Washington', id: '1234512' },
-    { playerName: 'Samantha Goh', id: '11223345' },
-    { playerName: 'George Washington', id: '1234513' },
-    { playerName: 'Samantha Goh', id: '112233414' },
-  ];
-
   return (
     <div>
       <Loading open={isLoading} msg={Content.fetchingOppStats} />
@@ -126,7 +107,7 @@ const AttackKingdom = ({ numOwned }) => {
       <AttackList
         open={isAttackListOpen}
         closeDialog={handleCloseAttackList}
-        contentArray={TEST_DATA}
+        contentArray={playerList}
         nextStep={checkPreAttackStats}
       />
       <Action
