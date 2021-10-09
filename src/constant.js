@@ -1,3 +1,14 @@
+export const END_TURN_RESOURCES_TEMPLATE = {
+  lumber: 0,
+  steel: 0,
+  gold: 0,
+};
+
+export const INFO_DIALOG_TYPE = {
+  ALR_ATTACKED: 'ALR_ATTACKED',
+  ATTACKED: 'ATTACKED',
+};
+
 export const BUTTON_TYPE = {
   NEXT: 'NEXT',
   ENTER: 'ENTER',

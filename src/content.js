@@ -41,6 +41,10 @@ const Content = {
       desc: 'You have started a war against the player.',
     },
   },
+  turnEnd: {
+    title: 'End of Turn',
+    desc: 'You have received:',
+  },
 };
 
 export default Content;
