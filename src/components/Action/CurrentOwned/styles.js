@@ -1,6 +1,7 @@
 const styles = {
   text: {
     textAlign: 'center',
+    color: '#7F2E3F',
   },
   ownedContainer: {
     display: 'flex',
@@ -9,8 +10,8 @@ const styles = {
     position: 'relative',
     backgroundColor: 'white',
     height: '60px',
-    width: '120px',
-    marginLeft: 130,
+    width: '60px',
+    marginLeft: 150,
     marginBottom: -20,
     zIndex: 4,
   },
