@@ -1,3 +1,5 @@
+import { INFO_DIALOG_TYPE } from 'constant';
+
 const Content = {
   title: 'Kingdom',
   kingdomNameField: 'Your kingdom name:',
@@ -28,6 +30,16 @@ const Content = {
     castle: 'Castles',
     army: 'Armies',
     winProb: 'Chance of Winning',
+  },
+  attackOutcome: {
+    [INFO_DIALOG_TYPE.ALR_ATTACKED]: {
+      title: 'Sorry',
+      desc: 'The selected player is already engaged in a war. Please try another.',
+    },
+    [INFO_DIALOG_TYPE.ATTACKED]: {
+      title: 'War',
+      desc: 'You have started a war against the player.',
+    },
   },
 };
 
