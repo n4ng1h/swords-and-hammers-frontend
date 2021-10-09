@@ -21,7 +21,7 @@ const WarRoomPage = () => {
   const [builtResources, setBuiltResources] = useState(
     BUILT_RESOURCES_TEMPLATE
   );
-  const [isTurnEndDialogOpen, setTurnEndDialogOpen] = useState(true);
+  const [isTurnEndDialogOpen, setTurnEndDialogOpen] = useState(false);
   // TODO: Open the turn end dialog when the end turn is detected
   // eslint-disable-next-line no-unused-vars
   const handleOpenTurnEndDialog = () => {
