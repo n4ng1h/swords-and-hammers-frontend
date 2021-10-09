@@ -1,5 +1,7 @@
 export const BUTTON_TYPE = {
   NEXT: 'NEXT',
+  ENTER: 'ENTER',
+  SMALL: 'SMALL',
 };
 
 export const DEFAULT_ROUND_DISPLAY = '0 / 999';
@@ -12,9 +14,9 @@ export const RAW_MATERIALS_TEMPLATE = {
 Object.freeze(RAW_MATERIALS_TEMPLATE);
 
 export const BUILT_RESOURCES_TEMPLATE = {
-  village: 999,
+  village: 2,
   castle: 0,
-  army: 0,
+  army: 1,
 };
 Object.freeze(BUILT_RESOURCES_TEMPLATE);
 
