@@ -20,6 +20,8 @@ const Content = {
     },
   },
   noCostText: 'No cost',
+  closeBtn: 'X',
+  attackBtn: 'Attack',
 };
 
 export default Content;
