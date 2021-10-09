@@ -13,7 +13,7 @@ const styles = {
     width: '60px',
     marginLeft: 150,
     marginBottom: -20,
-    zIndex: 4,
+    zIndex: 1,
   },
 };
 
