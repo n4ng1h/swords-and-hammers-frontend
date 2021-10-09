@@ -28,6 +28,7 @@ const styles = {
   title: {
     color: 'white',
     overflowWrap: 'break-word',
+    textAlign: 'center',
   },
   boardTitle: {
     width: '280px',
@@ -35,6 +36,7 @@ const styles = {
   boardContent: {
     marginTop: 2,
     width: '260px',
+    textAlign: 'center',
   },
 };
 
