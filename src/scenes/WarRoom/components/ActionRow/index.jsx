@@ -24,7 +24,7 @@ const ActionRow = ({ resources }) => {
           <TrainArmy numOwned={resources.army} />
         </Grid>
         <Grid item>
-          <AttackKingdom />
+          <AttackKingdom numOwned={resources.army} />
         </Grid>
       </Grid>
     </Grid>
