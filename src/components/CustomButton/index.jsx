@@ -17,6 +17,8 @@ const CustomButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'btnType',
 })(({ btnType }) => ({
   ...(btnType === BUTTON_TYPE.NEXT && styles.nextBtn),
+  ...(btnType === BUTTON_TYPE.ENTER && styles.enterBtn),
+  ...(btnType === BUTTON_TYPE.SMALL && styles.smallBtn),
 }));
 
 export default CustomButton;
