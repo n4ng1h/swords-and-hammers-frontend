@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import ViewProvider from 'providers/View';
+import SocketProvider from 'providers/Socket';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
@@ -11,7 +12,9 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <ViewProvider>
-        <App />
+        <SocketProvider>
+          <App />
+        </SocketProvider>
       </ViewProvider>
     </BrowserRouter>
   </React.StrictMode>,
