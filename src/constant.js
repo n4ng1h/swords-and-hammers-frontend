@@ -1,3 +1,14 @@
+export const SOCKET_EVENT_ROLE_TYPE = {
+  USER: 'USER',
+};
+export const SOCKET_EVENT_TYPE = {
+  START_GAME: 'START_GAME',
+  GAME_COMPLETED: 'GAME_COMPLETED',
+  NEXT_ROUND: 'NEXT_ROUND',
+};
+export const SOCKET_EVENT = 'trigger';
+export const SERVICES_ENDPOINT = 'https://api.kingdom.higglerslab.com';
+
 export const END_TURN_RESOURCES_TEMPLATE = {
   lumber: 0,
   steel: 0,
