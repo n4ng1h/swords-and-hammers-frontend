@@ -46,6 +46,8 @@ const Content = {
     desc: 'You have received:',
   },
   pageLoading: 'Loading...',
+  cannotJoinError: 'Unable to join game.',
+  waitingGameStart: 'Waiting for game to start...',
 };
 
 export default Content;
