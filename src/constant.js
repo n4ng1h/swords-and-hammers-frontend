@@ -1,3 +1,11 @@
+export const ACTION_TYPE = {
+  BUILD_VILLAGE: 'BUILD_VILLAGE',
+  BUILD_CASTLE: 'BUILD_CASTLE',
+  BUILD_ARMY: 'BUILD_ARMY',
+  ATTACK: 'ATTACK',
+  SKIP: 'SKIP',
+};
+export const SERVICES_ENDPOINT = 'https://api.kingdom.higglerslab.com';
 export const SOCKET_EVENT_ROLE_TYPE = {
   USER: 'USER',
 };
@@ -7,11 +15,10 @@ export const SOCKET_EVENT_TYPE = {
   NEXT_ROUND: 'NEXT_ROUND',
 };
 export const SOCKET_EVENT = 'trigger';
-export const SERVICES_ENDPOINT = 'https://api.kingdom.higglerslab.com';
 
 export const END_TURN_RESOURCES_TEMPLATE = {
   lumber: 0,
-  steel: 0,
+  iron: 0,
   gold: 0,
 };
 
@@ -30,7 +37,7 @@ export const DEFAULT_ROUND_DISPLAY = '0 / 999';
 
 export const RAW_MATERIALS_TEMPLATE = {
   lumber: 0,
-  steel: 0,
+  iron: 0,
   gold: 0,
 };
 Object.freeze(RAW_MATERIALS_TEMPLATE);
