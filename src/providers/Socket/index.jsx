@@ -74,10 +74,9 @@ const SocketProvider = ({ children }) => {
 
     // Cleanup to ensure that we disconnect from the socket
     return () => {
-      console.log('DISCONNECTING FROM SOCKET!');
       socket.disconnect();
     };
-  }, []);
+  }, [data.gameId, history]);
 
   return (
     <SocketContext.Provider value={data}>{children}</SocketContext.Provider>
