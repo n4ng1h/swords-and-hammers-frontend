@@ -7,6 +7,7 @@ const SocketContext = createContext({
   hasGameStarted: false,
   hasGameEnded: false,
   isRoundActive: false,
+  setEndTurn: () => {},
 });
 
 export default SocketContext;

@@ -52,6 +52,7 @@ Object.freeze(BUILT_RESOURCES_TEMPLATE);
 export const ROUTE_PATH = {
   main: '/',
   warroom: '/warroom',
+  leaderboard: '/leaderboard',
 };
 
 export const OPPONENT_STATS_TEMPLATE = {

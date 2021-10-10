@@ -1,6 +1,7 @@
-/* eslint-disable no-unused-vars */
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import SocketContext from 'contexts/Socket';
+import ResourceContext from 'contexts/Resource';
 import Title from 'components/Title';
 import CustomButton from 'components/CustomButton';
 import CustomTextField from 'components/CustomTextField';
@@ -9,40 +10,55 @@ import { Grid } from '@mui/material';
 import Content from 'content';
 import { BUTTON_TYPE, ROUTE_PATH } from 'constant';
 import isKingdomNameValid from 'services/validation';
+import { joinGame } from 'services/api';
 import styles from './styles';
 
 const MainPage = () => {
   const history = useHistory();
-  // eslint-disable-next-line no-unused-vars
   const [kingdomName, setKingdomName] = useState('');
-  // eslint-disable-next-line no-unused-vars
   const [errorMsg, setErrorMsg] = useState('');
   const resetErrorMsg = () => {
     setErrorMsg('');
   };
   const [isPageLoading, setIsPageLoading] = useState(false);
+  const { gameId, hasGameStarted } = useContext(SocketContext);
+  const { setResourceInfo } = useContext(ResourceContext);
+  const [readyToPlay, setReadyToPlay] = useState(false);
 
-  // eslint-disable-next-line no-unused-vars
-  const handleStartGame = () => {
+  const handleStartGame = async () => {
     if (isKingdomNameValid(kingdomName)) {
       // Set the page to loading while we wait for a response from the server
       setIsPageLoading(true);
-      // Disable the button
       resetErrorMsg();
-      // If it is valid, we proceed to the next step
-      // TODO: API call to submit user details to backend
-      history.push(ROUTE_PATH.warroom);
-      // Remove the backdrop loader
-      setIsPageLoading(false);
+      const setupInfo = await joinGame(gameId, kingdomName);
+      if (setupInfo !== null) {
+        setResourceInfo(setupInfo);
+        setReadyToPlay(true);
+        setIsPageLoading(false);
+      } else {
+        // Remove the backdrop loader
+        setIsPageLoading(false);
+        setErrorMsg(Content.cannotJoinError);
+      }
     } else {
       // Display error to the user
       setErrorMsg(Content.invalidKingdomName);
     }
   };
 
+  useEffect(() => {
+    const DEV_MODE = true;
+    if ((hasGameStarted && readyToPlay) || (DEV_MODE && readyToPlay)) {
+      history.push(`/${gameId}${ROUTE_PATH.warroom}`);
+    }
+  }, [gameId, hasGameStarted, history, readyToPlay]);
+
   return (
     <div>
-      <Loading open={isPageLoading} msg="Loading" />
+      <Loading
+        open={isPageLoading || (readyToPlay && !hasGameStarted)}
+        msg={isPageLoading ? Content.pageLoading : Content.waitingGameStart}
+      />
       <Grid
         container
         direction="column"
@@ -68,7 +84,7 @@ const MainPage = () => {
           <CustomButton
             btnType={BUTTON_TYPE.NEXT}
             onClick={handleStartGame}
-            disabled={isPageLoading}
+            disabled={isPageLoading || readyToPlay}
           >
             {Content.startBtn}
           </CustomButton>
