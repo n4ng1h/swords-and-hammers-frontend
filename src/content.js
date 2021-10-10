@@ -45,6 +45,7 @@ const Content = {
     title: 'End of Turn',
     desc: 'You have received:',
   },
+  pageLoading: 'Loading...',
 };
 
 export default Content;
