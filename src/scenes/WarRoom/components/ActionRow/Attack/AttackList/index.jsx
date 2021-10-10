@@ -18,7 +18,7 @@ import { BUTTON_TYPE } from 'constant';
 import Content from 'content';
 import styles from './styles';
 
-const RowItemRenderer = ({ user, currSelected, setSelected }) => {
+const RowItemRenderer = ({ user, currSelected, setSelected, rowIdx }) => {
   if (user === null) {
     return null;
   }
@@ -28,14 +28,14 @@ const RowItemRenderer = ({ user, currSelected, setSelected }) => {
       <ListItemButton onClick={setSelected}>
         <ListItemIcon>
           <Radio
-            value={user.id}
-            checked={currSelected === user.id}
+            value={rowIdx}
+            checked={currSelected === rowIdx}
             sx={styles.radio}
           />
         </ListItemIcon>
         <ListItemText
           sx={styles.itemText}
-          primary={`Kingdom of ${user.playerName}`}
+          primary={`Kingdom of ${user.gameName}`}
         />
       </ListItemButton>
     </ListItem>
@@ -49,15 +49,35 @@ RowItemRenderer.defaultProps = {
 
 RowItemRenderer.propTypes = {
   user: PropTypes.shape({
-    playerName: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
+    chanceOfWinning: PropTypes.number.isRequired,
+    defenderCard: PropTypes.shape({
+      village: PropTypes.number.isRequired,
+      castle: PropTypes.number.isRequired,
+      army: PropTypes.number.isRequired,
+    }),
+    _id: PropTypes.string.isRequired,
+    uuid: PropTypes.string.isRequired,
+    gameName: PropTypes.string.isRequired,
+    participantId: PropTypes.string.isRequired,
   }),
-  currSelected: PropTypes.string,
+  currSelected: PropTypes.number,
   setSelected: PropTypes.func.isRequired,
+  rowIdx: PropTypes.number.isRequired,
 };
 
-const AttackList = ({ open, contentArray, closeDialog, nextStep }) => {
+const AttackList = ({
+  open,
+  contentArray,
+  closeDialog,
+  updateTargetOpponent,
+  nextStep,
+}) => {
   const [selectedRow, setSelectedRow] = useState(null);
+
+  const selectTargetOpponent = (oppIdx) => {
+    setSelectedRow(oppIdx);
+    updateTargetOpponent(oppIdx);
+  };
 
   const performNextStep = () => {
     if (selectedRow !== null) {
@@ -90,14 +110,15 @@ const AttackList = ({ open, contentArray, closeDialog, nextStep }) => {
           </CustomButton>
           <Box sx={styles.list}>
             <List>
-              {contentArray.map((user) => (
-                <div key={user.id}>
+              {contentArray.map((user, idx) => (
+                <div key={user.participantId}>
                   <RowItemRenderer
                     user={user}
                     currSelected={selectedRow}
                     setSelected={() => {
-                      setSelectedRow(user.id);
+                      selectTargetOpponent(idx);
                     }}
+                    rowIdx={idx}
                   />
                   <Divider />
                 </div>
@@ -129,12 +150,21 @@ AttackList.propTypes = {
   open: PropTypes.bool.isRequired,
   contentArray: PropTypes.arrayOf(
     PropTypes.shape({
-      playerName: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
+      chanceOfWinning: PropTypes.number.isRequired,
+      defenderCard: PropTypes.shape({
+        village: PropTypes.number.isRequired,
+        castle: PropTypes.number.isRequired,
+        army: PropTypes.number.isRequired,
+      }),
+      _id: PropTypes.string.isRequired,
+      uuid: PropTypes.string.isRequired,
+      gameName: PropTypes.string.isRequired,
+      participantId: PropTypes.string.isRequired,
     })
   ),
   closeDialog: PropTypes.func.isRequired,
   nextStep: PropTypes.func.isRequired,
+  updateTargetOpponent: PropTypes.func.isRequired,
 };
 
 export default AttackList;
