@@ -17,7 +17,7 @@ const Content = {
   images: {
     altText: {
       lumber: 'Lumber resource',
-      steel: 'Steel resource',
+      iron: 'Iron resource',
       gold: 'Gold resources',
     },
   },

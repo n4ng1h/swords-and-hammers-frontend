@@ -2,7 +2,7 @@
 import PropTypes from 'prop-types';
 import { Box, Grid, Typography } from '@mui/material';
 import LumberImage from 'assets/images/resources/lumber.png';
-import SteelImage from 'assets/images/resources/steel.png';
+import IronImage from 'assets/images/resources/iron.png';
 import GoldImage from 'assets/images/resources/gold.png';
 import Content from 'content';
 import styles from './styles';
@@ -38,15 +38,15 @@ const ActionResources = ({ resourceCost }) => {
               </p>
             </Grid>
           ) : null}
-          {resourceCost.steel ? (
+          {resourceCost.iron ? (
             <Grid item>
               <img
-                alt={Content.images.altText.steel}
-                src={SteelImage}
-                style={styles.imgSteel}
+                alt={Content.images.altText.iron}
+                src={IronImage}
+                style={styles.imgIron}
               />
               <p style={styles.text}>
-                {formatNumberDisplay(resourceCost.steel)}
+                {formatNumberDisplay(resourceCost.iron)}
               </p>
             </Grid>
           ) : null}
@@ -76,7 +76,7 @@ ActionResources.defaultProps = {
 
 ActionResources.propTypes = {
   resourceCost: PropTypes.shape({
-    steel: PropTypes.number.isRequired,
+    iron: PropTypes.number.isRequired,
     lumber: PropTypes.number.isRequired,
     gold: PropTypes.number.isRequired,
   }),

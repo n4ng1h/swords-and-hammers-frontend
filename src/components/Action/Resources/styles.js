@@ -15,7 +15,7 @@ const styles = {
     paddingTop: 5,
     marginBottom: 10,
   },
-  imgSteel: {
+  imgIron: {
     width: 30,
     height: 30,
   },

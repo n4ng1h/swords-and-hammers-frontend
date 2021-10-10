@@ -53,7 +53,7 @@ Action.propTypes = {
   btnImg: PropTypes.string.isRequired,
   btnCaption: PropTypes.string.isRequired,
   resourceCost: PropTypes.shape({
-    steel: PropTypes.number.isRequired,
+    iron: PropTypes.number.isRequired,
     lumber: PropTypes.number.isRequired,
     gold: PropTypes.number.isRequired,
   }),

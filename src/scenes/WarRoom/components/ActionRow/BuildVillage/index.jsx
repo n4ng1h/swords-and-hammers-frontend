@@ -9,7 +9,7 @@ const BuildVillage = ({ numOwned }) => {
     <Action
       btnImg={VillageImage}
       btnCaption={Content.action.buildVillage}
-      resourceCost={{ lumber: -3, steel: -2, gold: 5 }}
+      resourceCost={{ lumber: -3, iron: -2, gold: 5 }}
       numOwned={numOwned}
     />
   );

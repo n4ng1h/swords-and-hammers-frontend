@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Grid } from '@mui/material';
 import OwnedResource from 'components/OwnedResource';
 import LumberImage from 'assets/images/resources/lumber.png';
-import SteelImage from 'assets/images/resources/steel.png';
+import IronImage from 'assets/images/resources/iron.png';
 import GoldImage from 'assets/images/resources/gold.png';
 import Content from 'content';
 
@@ -24,9 +24,9 @@ const ResourceRow = ({ resourceOwned }) => {
       </Grid>
       <Grid item>
         <OwnedResource
-          resourceImg={SteelImage}
-          numResource={resourceOwned.steel}
-          resourceAlt={Content.images.altText.steel}
+          resourceImg={IronImage}
+          numResource={resourceOwned.iron}
+          resourceAlt={Content.images.altText.iron}
         />
       </Grid>
       <Grid item>
@@ -43,7 +43,7 @@ const ResourceRow = ({ resourceOwned }) => {
 ResourceRow.defaultProps = {
   resourceOwned: {
     lumber: -1,
-    steel: -1,
+    iron: -1,
     gold: -1,
   },
 };
@@ -51,7 +51,7 @@ ResourceRow.defaultProps = {
 ResourceRow.propTypes = {
   resourceOwned: PropTypes.shape({
     lumber: PropTypes.number.isRequired,
-    steel: PropTypes.number.isRequired,
+    iron: PropTypes.number.isRequired,
     gold: PropTypes.number.isRequired,
   }),
 };
