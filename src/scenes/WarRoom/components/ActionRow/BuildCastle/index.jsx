@@ -9,7 +9,7 @@ import { ACTION_TYPE } from 'constant';
 import { takeTurn, refreshResourceState, fetchEventLogs } from 'services/api';
 
 const BuildCastle = ({ numOwned }) => {
-  const { gameId } = useContext(SocketContext);
+  const { gameId, setEndTurn } = useContext(SocketContext);
   const { setResourceInfo, setEventLog } = useContext(ResourceContext);
 
   const buildACastle = async () => {
@@ -20,6 +20,8 @@ const BuildCastle = ({ numOwned }) => {
       setResourceInfo(currResourceState);
       // Refresh the event log
       setEventLog(await fetchEventLogs(gameId));
+      // END THE TURN
+      setEndTurn();
     }
   };
 

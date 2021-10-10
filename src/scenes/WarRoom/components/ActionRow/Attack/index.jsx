@@ -15,7 +15,7 @@ import PreAttack from './PreAttack';
 import styles from './styles';
 
 const AttackKingdom = ({ numOwned }) => {
-  const { gameId } = useContext(SocketContext);
+  const { gameId, setEndTurn } = useContext(SocketContext);
   const { setEventLog } = useContext(ResourceContext);
   const [isLoading, setIsLoading] = useState(false);
   const [playerList, setPlayerList] = useState([]);
@@ -90,6 +90,7 @@ const AttackKingdom = ({ numOwned }) => {
     if (!isAttackSuccess) {
       setInfoDialogType(INFO_DIALOG_TYPE.ALR_ATTACKED);
     } else {
+      setEndTurn();
       // Else set the attack success dialog
       setInfoDialogType(INFO_DIALOG_TYPE.ATTACKED);
     }

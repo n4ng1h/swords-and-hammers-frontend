@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import SocketIOClient from 'socket.io-client';
 import {
+  ROUTE_PATH,
   SERVICES_ENDPOINT,
   SOCKET_EVENT,
   SOCKET_EVENT_ROLE_TYPE,
@@ -11,6 +13,7 @@ import { checkGameStarted } from 'services/socket';
 import SocketContext from 'contexts/Socket';
 
 const SocketProvider = ({ children }) => {
+  const history = useHistory();
   const [data, setData] = useState({
     gameId: '',
     setGameId: (_gameId) => {
@@ -23,6 +26,12 @@ const SocketProvider = ({ children }) => {
     hasGameStarted: false,
     hasGameEnded: false,
     isRoundActive: false,
+    setEndTurn: () => {
+      setData((prevState) => ({
+        ...prevState,
+        isRoundActive: false,
+      }));
+    },
   });
 
   useEffect(() => {
@@ -45,6 +54,7 @@ const SocketProvider = ({ children }) => {
               hasGameEnded: true,
               isRoundActive: false,
             }));
+            history.push(`/${data.gameId}${ROUTE_PATH.leaderboard}`);
             break;
           }
 
@@ -63,7 +73,10 @@ const SocketProvider = ({ children }) => {
     });
 
     // Cleanup to ensure that we disconnect from the socket
-    return () => socket.disconnect();
+    return () => {
+      console.log('DISCONNECTING FROM SOCKET!');
+      socket.disconnect();
+    };
   }, []);
 
   return (

@@ -6,6 +6,7 @@ const ResourceContext = createContext({
   setResourceInfo: (_rsrcInfo) => {},
   eventLog: [],
   setEventLog: (_logs) => {},
+  setEndTurn: () => {},
 });
 
 export default ResourceContext;

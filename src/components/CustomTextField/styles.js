@@ -32,6 +32,7 @@ const styles = {
   },
   errorMsg: {
     minHeight: '24px',
+    overflowWrap: 'break-word',
   },
 };
 
