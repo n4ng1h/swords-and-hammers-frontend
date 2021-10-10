@@ -2,7 +2,7 @@ import './App.css';
 import { useContext, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import SocketContext from 'contexts/Socket';
-import getFirstUrlSection from 'services/utils';
+import { getFirstUrlSection } from 'services/utils';
 import Loading from 'components/Loading';
 import Content from 'content';
 import routes from './routes';
