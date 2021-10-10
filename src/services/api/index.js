@@ -2,6 +2,18 @@ import { v4 as uuidv4 } from 'uuid';
 import { axiosInstance } from 'services/utils';
 import { ACTION_TYPE } from 'constant';
 
+export const fetchLeaderboard = async (gameId) => {
+  try {
+    const { data } = await axiosInstance.get(
+      `/api/v1/games/${gameId}/leaderBoard`
+    );
+    return data;
+  } catch (error) {
+    console.log(`Something has gone wrong: ${JSON.stringify(error)}`);
+    return null;
+  }
+};
+
 export const fetchEventLogs = async (gameId) => {
   try {
     const { data } = await axiosInstance.get(`/api/v1/games/${gameId}/feed`);
