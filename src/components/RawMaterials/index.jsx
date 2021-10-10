@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Grid, Typography } from '@mui/material';
 import Content from 'content';
 import LumberImage from 'assets/images/resources/lumber.png';
-import SteelImage from 'assets/images/resources/steel.png';
+import IronImage from 'assets/images/resources/iron.png';
 import GoldImage from 'assets/images/resources/gold.png';
 import styles from './styles';
 
@@ -39,15 +39,15 @@ const RawMaterial = ({ resources }) => {
           </Typography>
         </Grid>
       ) : null}
-      {Number.isInteger(resources.steel) ? (
+      {Number.isInteger(resources.iron) ? (
         <Grid item>
           <img
-            alt={Content.images.altText.steel}
-            src={SteelImage}
-            style={styles.imgSteel}
+            alt={Content.images.altText.iron}
+            src={IronImage}
+            style={styles.imgIron}
           />
           <Typography style={styles.text} variant="h6">
-            {formatNumberDisplay(resources.steel)}
+            {formatNumberDisplay(resources.iron)}
           </Typography>
         </Grid>
       ) : null}
@@ -73,7 +73,7 @@ RawMaterial.defaultProps = {
 
 RawMaterial.propTypes = {
   resources: PropTypes.shape({
-    steel: PropTypes.number.isRequired,
+    iron: PropTypes.number.isRequired,
     lumber: PropTypes.number.isRequired,
     gold: PropTypes.number.isRequired,
   }),

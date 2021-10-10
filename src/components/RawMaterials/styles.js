@@ -8,7 +8,7 @@ const styles = {
     paddingTop: 10,
     marginBottom: 15,
   },
-  imgSteel: {
+  imgIron: {
     width: 50,
     height: 50,
   },

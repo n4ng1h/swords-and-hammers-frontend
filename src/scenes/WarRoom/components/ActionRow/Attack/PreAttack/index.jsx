@@ -15,7 +15,7 @@ const PreAttack = ({ open, closeDialog, oppStats, performAttack }) => {
 
   useEffect(() => {
     if (oppStats !== null) {
-      setTitle(`${oppStats.kingdomName}${Content.kingdomConjugate}`);
+      setTitle(`${oppStats.gameName}${Content.kingdomConjugate}`);
     }
   }, [oppStats]);
 
@@ -41,11 +41,16 @@ PreAttack.propTypes = {
   open: PropTypes.bool.isRequired,
   closeDialog: PropTypes.func.isRequired,
   oppStats: PropTypes.shape({
-    kingdomName: PropTypes.string.isRequired,
-    village: PropTypes.number.isRequired,
-    castle: PropTypes.number.isRequired,
-    army: PropTypes.number.isRequired,
-    winProb: PropTypes.number.isRequired,
+    chanceOfWinning: PropTypes.number.isRequired,
+    defenderCard: PropTypes.shape({
+      village: PropTypes.number.isRequired,
+      castle: PropTypes.number.isRequired,
+      army: PropTypes.number.isRequired,
+    }),
+    _id: PropTypes.string.isRequired,
+    uuid: PropTypes.string.isRequired,
+    gameName: PropTypes.string.isRequired,
+    participantId: PropTypes.string.isRequired,
   }),
   performAttack: PropTypes.func.isRequired,
 };

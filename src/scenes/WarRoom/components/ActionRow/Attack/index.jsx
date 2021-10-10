@@ -1,19 +1,44 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Typography } from '@mui/material';
+import SocketContext from 'contexts/Socket';
+import ResourceContext from 'contexts/Resource';
 import Action from 'components/Action';
 import Loading from 'components/Loading';
 import AttackImage from 'assets/images/buttons/attack.png';
 import Content from 'content';
-import { OPPONENT_STATS_TEMPLATE, INFO_DIALOG_TYPE } from 'constant';
+import { ACTION_TYPE, INFO_DIALOG_TYPE } from 'constant';
 import InfoDialog from 'components/InfoDialog';
+import { fetchEventLogs, fetchOpponentList, takeTurn } from 'services/api';
 import AttackList from './AttackList';
 import PreAttack from './PreAttack';
 import styles from './styles';
 
 const AttackKingdom = ({ numOwned }) => {
+  const { gameId } = useContext(SocketContext);
+  const { setEventLog } = useContext(ResourceContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [playerList, setPlayerList] = useState([]);
+  const [oppIdx, setOppIdx] = useState(0);
+
+  const refreshLogs = async () => {
+    setEventLog(await fetchEventLogs(gameId));
+  };
+
+  const prepareAttackList = async () => {
+    // Set page to loading
+    setIsLoading(true);
+    const attackStats = await fetchOpponentList(gameId);
+    if (attackStats !== null) {
+      setPlayerList(attackStats);
+    }
+    // Remove the loading screen
+    setIsLoading(false);
+  };
+
   const [isAttackListOpen, setAttackListOpen] = useState(false);
-  const handleOpenAttackList = () => {
+  const handleOpenAttackList = async () => {
+    await prepareAttackList();
     setAttackListOpen(true);
   };
   const handleCloseAttackList = () => {
@@ -21,7 +46,6 @@ const AttackKingdom = ({ numOwned }) => {
   };
 
   const [isPreAttackOpen, setPreAttackOpen] = useState(false);
-  // eslint-disable-next-line no-unused-vars
   const handleOpenPreAttack = () => {
     setPreAttackOpen(true);
   };
@@ -29,30 +53,13 @@ const AttackKingdom = ({ numOwned }) => {
     setPreAttackOpen(false);
   };
 
-  const [isLoading, setIsLoading] = useState(false);
-  // TODO: Update the opponent stats from the fetched server data
-  // eslint-disable-next-line no-unused-vars
-  const [oppStats, setOppStats] = useState(OPPONENT_STATS_TEMPLATE);
-
-  // eslint-disable-next-line no-unused-vars
-  const checkPreAttackStats = (playerId) => {
+  const checkPreAttackStats = async () => {
     // Close the AttackList
     handleCloseAttackList();
-    // Set page to loading
-    setIsLoading(true);
-    // TODO: Fetch opponent stats from server
-    // TODO: Update the opponent stats from the fetched server data
-    // Remove the loading screen
-    setIsLoading(false);
+
     // Open the PreAttack dialog
     handleOpenPreAttack();
   };
-
-  // eslint-disable-next-line no-unused-vars
-  const [playerList, setPlayerList] = useState([]);
-  useEffect(() => {
-    // TODO: Retrieve the player list
-  });
 
   const [infoDialogType, setInfoDialogType] = useState(null);
   const [isInfoDialogOpen, setInfoDialogOpen] = useState(false);
@@ -64,14 +71,23 @@ const AttackKingdom = ({ numOwned }) => {
     setInfoDialogType(null);
   };
 
-  const performAttack = () => {
+  const attackAnOpponent = async () => {
+    const attackOutcome = await takeTurn(
+      gameId,
+      ACTION_TYPE.ATTACK,
+      playerList[oppIdx].participantId
+    );
+    return attackOutcome;
+  };
+
+  const performAttack = async () => {
     // Set the page to loading
     setIsLoading(true);
-    // TODO: Make a backend call to submit the attack action
-    const IS_ATTACK_SUCCESS = true;
+    const isAttackSuccess = await attackAnOpponent();
+    refreshLogs();
     // If the attack is not successful (e.g. Player is already being attacked)
     // Set the error display dialog
-    if (!IS_ATTACK_SUCCESS) {
+    if (!isAttackSuccess) {
       setInfoDialogType(INFO_DIALOG_TYPE.ALR_ATTACKED);
     } else {
       // Else set the attack success dialog
@@ -101,7 +117,7 @@ const AttackKingdom = ({ numOwned }) => {
       <PreAttack
         open={isPreAttackOpen}
         closeDialog={handleClosePreAttack}
-        oppStats={oppStats}
+        oppStats={playerList[oppIdx]}
         performAttack={performAttack}
       />
       <AttackList
@@ -109,6 +125,7 @@ const AttackKingdom = ({ numOwned }) => {
         closeDialog={handleCloseAttackList}
         contentArray={playerList}
         nextStep={checkPreAttackStats}
+        updateTargetOpponent={setOppIdx}
       />
       <Action
         btnImg={AttackImage}

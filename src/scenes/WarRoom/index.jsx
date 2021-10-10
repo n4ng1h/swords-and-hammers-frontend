@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import ResourceContext from 'contexts/Resource';
 import { Container, Grid } from '@mui/material';
 import HeaderRow from 'scenes/WarRoom/components/HeaderRow';
 import KingdomTitle from 'components/KingdomTitle';
@@ -13,14 +14,33 @@ import {
 } from 'constant';
 import styles from './styles';
 
-// TODO: Create a state to listen for and update the number of user owned resources
 const WarRoomPage = () => {
-  // eslint-disable-next-line no-unused-vars
   const [rawMaterials, setRawMaterials] = useState(RAW_MATERIALS_TEMPLATE);
-  // eslint-disable-next-line no-unused-vars
   const [builtResources, setBuiltResources] = useState(
     BUILT_RESOURCES_TEMPLATE
   );
+
+  const { resourceInfo } = useContext(ResourceContext);
+  useEffect(() => {
+    if (
+      resourceInfo !== null &&
+      typeof resourceInfo !== 'undefined' &&
+      Object.keys(resourceInfo).length > 0
+    ) {
+      setRawMaterials({
+        lumber: resourceInfo.lumber,
+        iron: resourceInfo.iron,
+        gold: resourceInfo.gold,
+      });
+
+      setBuiltResources({
+        village: resourceInfo.village,
+        castle: resourceInfo.castle,
+        army: resourceInfo.army,
+      });
+    }
+  }, [resourceInfo]);
+
   const [isTurnEndDialogOpen, setTurnEndDialogOpen] = useState(false);
   // TODO: Open the turn end dialog when the end turn is detected
   // eslint-disable-next-line no-unused-vars
@@ -35,11 +55,6 @@ const WarRoomPage = () => {
   const [endTurnResources, setEndTurnResources] = useState(
     END_TURN_RESOURCES_TEMPLATE
   );
-
-  // Probably a subscription to listen for changes to the user's resources
-  useEffect(() => {
-    // And a cleanup function to unsubscribe
-  }, []);
 
   return (
     <Container>

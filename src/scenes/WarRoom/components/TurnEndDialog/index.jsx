@@ -28,7 +28,7 @@ TurnEndDialog.propTypes = {
   closeDialog: PropTypes.func.isRequired,
   endTurnGain: PropTypes.shape({
     lumber: PropTypes.number.isRequired,
-    steel: PropTypes.number.isRequired,
+    iron: PropTypes.number.isRequired,
     gold: PropTypes.number.isRequired,
   }).isRequired,
 };

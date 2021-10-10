@@ -17,7 +17,7 @@ const Content = {
   images: {
     altText: {
       lumber: 'Lumber resource',
-      steel: 'Steel resource',
+      iron: 'Iron resource',
       gold: 'Gold resources',
     },
   },
@@ -45,6 +45,9 @@ const Content = {
     title: 'End of Turn',
     desc: 'You have received:',
   },
+  pageLoading: 'Loading...',
+  cannotJoinError: 'Unable to join game.',
+  waitingGameStart: 'Waiting for game to start...',
 };
 
 export default Content;
