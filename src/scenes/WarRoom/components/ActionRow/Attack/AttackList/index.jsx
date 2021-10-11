@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
   Backdrop,
   Box,
@@ -12,6 +12,7 @@ import {
   ListItemText,
   Radio,
 } from '@mui/material';
+import ViewContext from 'contexts/View';
 import CloseIcon from '@mui/icons-material/Close';
 import CustomButton from 'components/CustomButton';
 import { BUTTON_TYPE } from 'constant';
@@ -72,6 +73,7 @@ const AttackList = ({
   updateTargetOpponent,
   nextStep,
 }) => {
+  const { isMobileView } = useContext(ViewContext);
   const [selectedRow, setSelectedRow] = useState(null);
 
   const selectTargetOpponent = (oppIdx) => {
@@ -103,12 +105,12 @@ const AttackList = ({
         <Grid item>
           <CustomButton
             btnType={BUTTON_TYPE.SMALL}
-            sx={styles.closeBtn}
+            sx={isMobileView ? styles.closeBtnMobile : styles.closeBtn}
             onClick={closeAndReset}
           >
             <CloseIcon sx={styles.closeIcon} />
           </CustomButton>
-          <Box sx={styles.list}>
+          <Box sx={isMobileView ? styles.listMobile : styles.list}>
             <List>
               {contentArray.map((user, idx) => (
                 <div key={user.participantId}>

@@ -1,10 +1,11 @@
 const styles = {
-  paperWeb: {
+  paper: {
     height: 200,
     backgroundColor: `rgba(0, 0, 0, 0.6)`,
   },
-  logTextWeb: {
+  logText: {
     paddingTop: '5px',
+    width: '100%',
     borderRadius: 2,
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
@@ -13,12 +14,10 @@ const styles = {
       color: 'white',
     },
   },
-  paperMobile: {
-    height: 200,
-    backgroundColor: `rgba(0, 0, 0, 0.6)`,
-  },
+
   logTextMobile: {
     paddingTop: '5px',
+    width: '100%',
     borderRadius: 2,
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
