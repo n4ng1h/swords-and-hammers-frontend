@@ -67,9 +67,9 @@ axiosInstance.interceptors.request.use(
     // eslint-disable-next-line radix
     const isExpired = Date.now() > parseInt(expiresAt ?? '');
     if (isExpired) {
-      console.log('Refreshing');
       await refreshAccessToken();
     }
+
     // eslint-disable-next-line no-param-reassign
     config.headers.Authorization = `Bearer ${localStorage.getItem(
       'accessToken'

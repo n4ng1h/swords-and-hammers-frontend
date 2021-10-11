@@ -1,15 +1,25 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
+import SocketContext from 'contexts/Socket';
 import GameRoundDisplay from 'components/GameRound/Display';
+import { fetchRoundInfo } from 'services/api';
 
 const GameRound = () => {
-  const [currRound, setCurrRound] = useState(1);
-  const [maxRounds, setMaxRounds] = useState(999);
+  const { currRound, totalRounds, setRoundInfo } = useContext(SocketContext);
 
-  // TODO: First time this component renders, retrieve the round information
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const getRoundInfo = async () => {
+      const roundInfo = await fetchRoundInfo();
+      if (roundInfo !== null) {
+        setRoundInfo(roundInfo.currRound, roundInfo.totalRounds);
+      }
+    };
 
-  return <GameRoundDisplay currRound={currRound} maxRounds={maxRounds} />;
+    if (currRound === 0) {
+      getRoundInfo();
+    }
+  }, [setRoundInfo, currRound]);
+
+  return <GameRoundDisplay currRound={currRound} maxRounds={totalRounds} />;
 };
 
 export default GameRound;
