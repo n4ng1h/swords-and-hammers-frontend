@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import SocketIOClient from 'socket.io-client';
 import {
@@ -11,6 +11,7 @@ import {
 } from 'constant';
 import { checkGameStarted } from 'services/socket';
 import { setTimerStart } from 'services/utils';
+import { fetchRoundInfo } from 'services/api';
 import SocketContext from 'contexts/Socket';
 
 const SocketProvider = ({ children }) => {
@@ -33,7 +34,29 @@ const SocketProvider = ({ children }) => {
         isRoundActive: false,
       }));
     },
+
+    currRound: 0,
+    totalRounds: 0,
+    setRoundInfo: (currRound, totalRounds) => {
+      setData((prevState) => ({
+        ...prevState,
+        currRound,
+        totalRounds,
+      }));
+    },
   });
+
+  // For fetching the round information
+  const getRoundInfo = useCallback(async () => {
+    const roundInfo = await fetchRoundInfo();
+    if (roundInfo !== null) {
+      data.setRoundInfo(roundInfo.currRound, roundInfo.totalRounds);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    getRoundInfo();
+  }, [getRoundInfo]);
 
   useEffect(() => {
     const socket = SocketIOClient(SERVICES_ENDPOINT);
@@ -61,6 +84,7 @@ const SocketProvider = ({ children }) => {
           }
 
           case SOCKET_EVENT_TYPE.NEXT_ROUND: {
+            getRoundInfo();
             setTimerStart();
             setData((prevState) => ({
               ...prevState,
@@ -79,7 +103,7 @@ const SocketProvider = ({ children }) => {
     return () => {
       socket.disconnect();
     };
-  }, [data.gameId, history]);
+  }, [data.gameId, getRoundInfo, history]);
 
   return (
     <SocketContext.Provider value={data}>{children}</SocketContext.Provider>

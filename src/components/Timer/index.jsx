@@ -3,9 +3,11 @@ import SocketContext from 'contexts/Socket';
 import MiniBoard from 'components/MiniBoard';
 import { getTimerLeft } from 'services/utils';
 import Content from 'content';
+import { takeTurn } from 'services/api';
+import { ACTION_TYPE } from 'constant';
 
 const Timer = () => {
-  const { setEndTurn, isRoundActive } = useContext(SocketContext);
+  const { gameId, setEndTurn, isRoundActive } = useContext(SocketContext);
   const [hasTimerStarted, setTimerStarted] = useState(false);
   const [countdownValue, setCountdownValue] = useState(getTimerLeft(60));
   const reduceCountdown = () => {
@@ -32,17 +34,19 @@ const Timer = () => {
 
   // For stopping the countdown
   useEffect(() => {
-    // TODO: If we receive 0 or less as the time remaining, perform a SKIP TURN
+    // If we receive 0 or less as the time remaining
     // OR if the game has ended
     // If we have run out of time
-    if (countdownValue <= 0) {
+    if (countdownValue <= 0 && isRoundActive) {
       // Clear the countdown timer
       clearInterval(timerRef.current);
       // END THE TURN
       setEndTurn();
       setTimerStarted(false);
+      // SKIP TURN
+      takeTurn(gameId, ACTION_TYPE.SKIP);
     }
-  }, [countdownValue, setEndTurn]);
+  }, [countdownValue, setEndTurn, isRoundActive, gameId]);
 
   return (
     <MiniBoard title={Content.timerTitle} content={String(countdownValue)} />

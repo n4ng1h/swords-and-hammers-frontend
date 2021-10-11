@@ -8,6 +8,9 @@ const SocketContext = createContext({
   hasGameEnded: false,
   isRoundActive: false,
   setEndTurn: () => {},
+  currRound: 0,
+  totalRounds: 0,
+  setRoundInfo: (_currRound, _totalRounds) => {},
 });
 
 export default SocketContext;

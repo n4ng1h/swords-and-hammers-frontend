@@ -10,7 +10,7 @@ import { Grid } from '@mui/material';
 import Content from 'content';
 import { BUTTON_TYPE, ROUTE_PATH } from 'constant';
 import isKingdomNameValid from 'services/validation';
-import { joinGame } from 'services/api';
+import { joinGame, fetchRoundInfo } from 'services/api';
 import styles from './styles';
 
 const MainPage = () => {
@@ -21,7 +21,7 @@ const MainPage = () => {
     setErrorMsg('');
   };
   const [isPageLoading, setIsPageLoading] = useState(false);
-  const { gameId, hasGameStarted } = useContext(SocketContext);
+  const { gameId, hasGameStarted, setRoundInfo } = useContext(SocketContext);
   const { setResourceInfo } = useContext(ResourceContext);
   const [readyToPlay, setReadyToPlay] = useState(false);
 
@@ -32,6 +32,10 @@ const MainPage = () => {
       resetErrorMsg();
       const setupInfo = await joinGame(gameId, kingdomName);
       if (setupInfo !== null) {
+        const roundInfo = await fetchRoundInfo();
+        if (roundInfo !== null) {
+          setRoundInfo(roundInfo.currRound, roundInfo.totalRounds);
+        }
         setResourceInfo(setupInfo);
         setReadyToPlay(true);
         setIsPageLoading(false);
@@ -47,8 +51,7 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    const DEV_MODE = true;
-    if ((hasGameStarted && readyToPlay) || (DEV_MODE && readyToPlay)) {
+    if (hasGameStarted && readyToPlay) {
       history.push(`/${gameId}${ROUTE_PATH.warroom}`);
     }
   }, [gameId, hasGameStarted, history, readyToPlay]);

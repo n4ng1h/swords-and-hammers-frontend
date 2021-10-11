@@ -3,7 +3,7 @@ export const ACTION_TYPE = {
   BUILD_CASTLE: 'BUILD_CASTLE',
   BUILD_ARMY: 'BUILD_ARMY',
   ATTACK: 'ATTACK',
-  SKIP: 'SKIP',
+  SKIP: 'SKIPPED',
 };
 export const SERVICES_ENDPOINT = 'https://api.kingdom.higglerslab.com';
 export const SOCKET_EVENT_ROLE_TYPE = {
