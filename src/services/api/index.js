@@ -2,6 +2,24 @@ import { v4 as uuidv4 } from 'uuid';
 import { axiosInstance } from 'services/utils';
 import { ACTION_TYPE } from 'constant';
 
+export const fetchRoundInfo = async () => {
+  try {
+    const { data } = await axiosInstance.get(`/api/v1/games`);
+    const roundInfo = { currRound: 0, totalRounds: 0 };
+
+    if (data !== null && typeof data.response !== 'undefined') {
+      if (data.response.length > 0) {
+        const gameData = data.response[0];
+        roundInfo.currRound = gameData.currentRound;
+        roundInfo.totalRounds = gameData.totalRound;
+      }
+    }
+    return roundInfo;
+  } catch (error) {
+    return null;
+  }
+};
+
 export const fetchLeaderboard = async (gameId) => {
   try {
     const { data } = await axiosInstance.get(
@@ -9,7 +27,6 @@ export const fetchLeaderboard = async (gameId) => {
     );
     return data;
   } catch (error) {
-    console.log(`Something has gone wrong: ${JSON.stringify(error)}`);
     return null;
   }
 };
@@ -19,7 +36,6 @@ export const fetchEventLogs = async (gameId) => {
     const { data } = await axiosInstance.get(`/api/v1/games/${gameId}/feed`);
     return data;
   } catch (error) {
-    console.log(`Something has gone wrong: ${JSON.stringify(error)}`);
     return null;
   }
 };
@@ -31,7 +47,6 @@ export const fetchOpponentList = async (gameId) => {
     );
     return data;
   } catch (error) {
-    console.log(`Something has gone wrong: ${JSON.stringify(error)}`);
     return null;
   }
 };
@@ -43,7 +58,6 @@ export const refreshResourceState = async (gameId) => {
     );
     return data[0];
   } catch (error) {
-    console.log(`Something has gone wrong: ${JSON.stringify(error)}`);
     return null;
   }
 };
@@ -92,7 +106,6 @@ export const takeTurn = async (gameId, actionType, addInfo) => {
     await axiosInstance.post(`/api/v1/gameTurn`, bodyPayload);
     return true;
   } catch (error) {
-    console.log(`Something has gone wrong: ${JSON.stringify(error)}`);
     return false;
   }
 };
@@ -116,10 +129,8 @@ export const joinGame = async (gameId, kingdomName) => {
     localStorage.setItem('accessToken', data.accessToken);
     return data.scoreCard;
   } catch (error) {
-    console.log(`Something has gone wrong: ${JSON.stringify(error)}`);
+    return null;
   }
-
-  return null;
 };
 
 export const getEventFeed = () => {};

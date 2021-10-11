@@ -52,8 +52,6 @@ async function refreshAccessToken() {
       );
     }
   } catch (e) {
-    console.log(e);
-    console.log('Navigate to login and clear everything');
     localStorage.clearItem('accessToken');
     localStorage.clearItem('refreshToken');
     localStorage.clearItem('expiresAt');
@@ -85,7 +83,6 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log('ERROR RESPONSE:', error.response);
     return Promise.reject(error.response.data.message.toString());
   }
 );

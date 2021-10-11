@@ -50,7 +50,6 @@ const SocketProvider = ({ children }) => {
   const getRoundInfo = useCallback(async () => {
     const roundInfo = await fetchRoundInfo();
     if (roundInfo !== null) {
-      console.log(`NEXT ROUND INFO IS: ${roundInfo}`);
       data.setRoundInfo(roundInfo.currRound, roundInfo.totalRounds);
     }
   }, [data]);
@@ -85,7 +84,6 @@ const SocketProvider = ({ children }) => {
           }
 
           case SOCKET_EVENT_TYPE.NEXT_ROUND: {
-            console.log('FETCHING ON NEXT ROUND:');
             getRoundInfo();
             setTimerStart();
             setData((prevState) => ({
