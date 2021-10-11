@@ -10,6 +10,7 @@ import {
   SOCKET_EVENT_TYPE,
 } from 'constant';
 import { checkGameStarted } from 'services/socket';
+import { setTimerStart } from 'services/utils';
 import SocketContext from 'contexts/Socket';
 
 const SocketProvider = ({ children }) => {
@@ -40,6 +41,7 @@ const SocketProvider = ({ children }) => {
       if (resp.role === SOCKET_EVENT_ROLE_TYPE.USER) {
         switch (resp.type) {
           case SOCKET_EVENT_TYPE.START_GAME: {
+            setTimerStart();
             setData((prevState) => ({
               ...prevState,
               hasGameStarted: checkGameStarted(prevState.gameId, resp.GameId),
@@ -59,6 +61,7 @@ const SocketProvider = ({ children }) => {
           }
 
           case SOCKET_EVENT_TYPE.NEXT_ROUND: {
+            setTimerStart();
             setData((prevState) => ({
               ...prevState,
               isRoundActive: true,
@@ -74,10 +77,9 @@ const SocketProvider = ({ children }) => {
 
     // Cleanup to ensure that we disconnect from the socket
     return () => {
-      console.log('DISCONNECTING FROM SOCKET!');
       socket.disconnect();
     };
-  }, []);
+  }, [data.gameId, history]);
 
   return (
     <SocketContext.Provider value={data}>{children}</SocketContext.Provider>

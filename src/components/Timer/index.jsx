@@ -1,23 +1,52 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useState } from 'react';
-import TimerDisplay from 'components/Timer/Display';
+import { useContext, useEffect, useRef, useState } from 'react';
+import SocketContext from 'contexts/Socket';
+import MiniBoard from 'components/MiniBoard';
+import { getTimerLeft } from 'services/utils';
+import Content from 'content';
 
 const Timer = () => {
-  // Time in seconds
-  const [timeLeft, setTimeLeft] = useState(3);
+  const { setEndTurn, isRoundActive } = useContext(SocketContext);
+  const [hasTimerStarted, setTimerStarted] = useState(false);
+  const [countdownValue, setCountdownValue] = useState(getTimerLeft(60));
+  const reduceCountdown = () => {
+    setCountdownValue((prevState) => prevState - 1);
+  };
+  const timerRef = useRef();
 
-  // TODO: First time we render this component:
-  // Check if there is a current timer state in the cookie
-  // Otherwise, perform a fetch from the backend
+  // For initializing the timer's starting countdown value
   useEffect(() => {
-    // Update the time left to commence displaying
-    // Store the local timestamp at which the round start flag is
-    // received from the backend in the cookie
-    // timeLeft = timeNow - storedTimeStamp
-    // Remember to update the cookie
-  }, []);
+    if (isRoundActive && !hasTimerStarted) {
+      setCountdownValue(getTimerLeft(60));
+      setTimerStarted(true);
+    }
+  }, [hasTimerStarted, isRoundActive]);
 
-  return <TimerDisplay startCountdownFrom={timeLeft} />;
+  // For triggering the countdown
+  useEffect(() => {
+    // If the countdown value is valid, and the timer is not yet started
+    if (countdownValue > 0 && !hasTimerStarted) {
+      // Start the countdown
+      timerRef.current = setInterval(reduceCountdown, 1000);
+    }
+  }, [countdownValue, hasTimerStarted]);
+
+  // For stopping the countdown
+  useEffect(() => {
+    // TODO: If we receive 0 or less as the time remaining, perform a SKIP TURN
+    // OR if the game has ended
+    // If we have run out of time
+    if (countdownValue <= 0) {
+      // Clear the countdown timer
+      clearInterval(timerRef.current);
+      // END THE TURN
+      setEndTurn();
+      setTimerStarted(false);
+    }
+  }, [countdownValue, setEndTurn]);
+
+  return (
+    <MiniBoard title={Content.timerTitle} content={String(countdownValue)} />
+  );
 };
 
 export default Timer;
