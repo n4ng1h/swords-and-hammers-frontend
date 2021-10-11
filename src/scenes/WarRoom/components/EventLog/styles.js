@@ -1,12 +1,24 @@
 const styles = {
-  paper: {
-    width: 600,
+  paperWeb: {
     height: 200,
     backgroundColor: `rgba(0, 0, 0, 0.6)`,
   },
-  logText: {
+  logTextWeb: {
     paddingTop: '5px',
-    width: 600,
+    borderRadius: 2,
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        border: 'none',
+      },
+      color: 'white',
+    },
+  },
+  paperMobile: {
+    height: 200,
+    backgroundColor: `rgba(0, 0, 0, 0.6)`,
+  },
+  logTextMobile: {
+    paddingTop: '5px',
     borderRadius: 2,
     '& .MuiOutlinedInput-root': {
       '& fieldset': {

@@ -1,6 +1,12 @@
 const styles = {
   root: {
-    width: '100%',
+    maxWidth: '100%',
+  },
+  middleItem: {
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    marginLeft: 1,
+    marginRight: 1,
   },
 };
 

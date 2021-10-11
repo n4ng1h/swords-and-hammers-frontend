@@ -13,7 +13,6 @@ const ResourceRow = ({ resourceOwned }) => {
       direction="row"
       justifyContent="space-evenly"
       alignItems="baseline"
-      spacing={4}
     >
       <Grid item>
         <OwnedResource

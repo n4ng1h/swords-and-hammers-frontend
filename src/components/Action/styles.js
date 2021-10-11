@@ -29,6 +29,12 @@ const styles = {
     backgroundRepeat: 'no-repeat',
     display: 'flex',
   },
+  btnMobile: {
+    position: 'relative',
+    height: '100%',
+    width: 170,
+    borderRadius: '50%',
+  },
 };
 
 export default styles;

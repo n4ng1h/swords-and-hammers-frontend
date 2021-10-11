@@ -1,20 +1,30 @@
 import PropTypes from 'prop-types';
-import { Container, Grid, Typography } from '@mui/material';
+import { useContext } from 'react';
+import ViewContext from 'contexts/View';
+import { Box, Grid, Typography } from '@mui/material';
 import styles from './styles';
 
 const MiniBoard = ({ title, content }) => {
+  const { isMobileView } = useContext(ViewContext);
+
   return (
-    <Container sx={styles.board}>
+    <Box sx={isMobileView ? styles.boardMobile : styles.boardWeb}>
       <Grid
         container
         direction="column"
         justifyContent="center"
         alignContent="center"
-        spacing={0}
-        sx={styles.content}
+        sx={isMobileView ? styles.contentMobile : styles.contentWeb}
       >
-        <Grid item sx={styles.contentElement}>
-          <Typography sx={styles.text} variant="h6">
+        <Grid
+          item
+          sx={
+            isMobileView
+              ? styles.contentElementMobile
+              : styles.contentElementWeb
+          }
+        >
+          <Typography sx={styles.text} variant="body">
             {title}
           </Typography>
         </Grid>
@@ -22,7 +32,7 @@ const MiniBoard = ({ title, content }) => {
           <Typography sx={styles.text}>{content}</Typography>
         </Grid>
       </Grid>
-    </Container>
+    </Box>
   );
 };
 

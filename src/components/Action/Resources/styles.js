@@ -29,6 +29,14 @@ const styles = {
   noCostText: {
     paddingTop: '15px',
   },
+  containerMobile: {
+    marginLeft: '15px',
+    height: 60,
+    width: 136,
+    backgroundColor: 'white',
+    borderRadius: '0px 0px 15px 15px',
+    marginTop: '-3px',
+  },
 };
 
 export default styles;
