@@ -1,12 +1,16 @@
 /* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import ViewContext from 'contexts/View';
 import { Avatar, Box, ButtonBase, Grid, Typography } from '@mui/material';
 import ActionResources from 'components/Action/Resources';
 import CurrentOwned from 'components/Action/CurrentOwned';
 import { styled } from '@mui/material/styles';
 import styles from './styles';
 
-const ActionButton = styled(ButtonBase)(() => styles.btn);
+const ActionButton = styled(ButtonBase, {
+  shouldForwardProp: (prop) => prop !== 'isMobileView',
+})(({ isMobileView }) => (isMobileView ? styles.btnMobile : styles.btn));
 
 const Action = ({
   btnImg,
@@ -17,11 +21,17 @@ const Action = ({
   disableNumOwned,
   disabled,
 }) => {
+  const { isMobileView } = useContext(ViewContext);
+
   return (
     <Box>
       <CurrentOwned disableNumOwned={disableNumOwned} numOwned={numOwned} />
-      <ActionButton onClick={onClick} disabled={disabled}>
-        <Grid container direction="column">
+      <ActionButton
+        onClick={onClick}
+        disabled={disabled}
+        isMobileView={isMobileView}
+      >
+        <Grid container direction="column" alignItems="stretch">
           <Grid item>
             <Box sx={styles.board}>
               <Box sx={styles.btnContent}>

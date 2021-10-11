@@ -65,7 +65,7 @@ const WarRoomPage = () => {
   // );
 
   return (
-    <Container>
+    <Container sx={styles.root}>
       <Loading open={!isRoundActive} msg={Content.waitingNextRound} />
       {/* <TurnEndDialog
         open={!isRoundActive}
@@ -75,17 +75,16 @@ const WarRoomPage = () => {
       <Grid
         container
         direction="column"
-        justifyContent="flex-start"
-        alignItems="center"
-        spacing={2}
+        justifyContent="center"
+        alignItems="stretch"
       >
         <Grid item sx={styles.statsControls}>
           <HeaderRow />
         </Grid>
-        <Grid item>
+        <Grid item sx={styles.title}>
           <KingdomTitle />
         </Grid>
-        <Grid item>
+        <Grid item sx={styles.resourceControls}>
           <ResourceRow resourceOwned={rawMaterials} />
         </Grid>
         <Grid item>

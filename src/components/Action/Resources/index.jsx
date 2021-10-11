@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import ViewContext from 'contexts/View';
 import { Box, Grid, Typography } from '@mui/material';
 import LumberImage from 'assets/images/resources/lumber.png';
 import IronImage from 'assets/images/resources/iron.png';
@@ -16,8 +18,10 @@ const ActionResources = ({ resourceCost }) => {
     return num;
   };
 
+  const { isMobileView } = useContext(ViewContext);
+
   return (
-    <Box sx={styles.container}>
+    <Box sx={isMobileView ? styles.containerMobile : styles.container}>
       {resourceCost ? (
         <Grid
           container

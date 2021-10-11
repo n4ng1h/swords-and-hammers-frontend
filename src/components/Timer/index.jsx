@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useContext, useEffect, useRef, useState } from 'react';
 import SocketContext from 'contexts/Socket';
 import MiniBoard from 'components/MiniBoard';
@@ -43,7 +44,7 @@ const Timer = () => {
       // END THE TURN
       setEndTurn();
       setTimerStarted(false);
-      // SKIP TURN
+      // // SKIP TURN
       takeTurn(gameId, ACTION_TYPE.SKIP);
     }
   }, [countdownValue, setEndTurn, isRoundActive, gameId]);
