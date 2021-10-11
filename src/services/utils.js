@@ -1,6 +1,25 @@
 import axios from 'axios';
 import { SERVICES_ENDPOINT } from 'constant';
 
+export const setTimerStart = () => {
+  localStorage.removeItem('timerStart');
+  localStorage.setItem('timerStart', Date.now());
+};
+
+export const getTimerLeft = (totalDuration) => {
+  const TOTAL_DURATION_IN_MS = totalDuration * 1000;
+  const timerStartAt = localStorage.getItem('timerStart');
+  if (typeof timerStartAt === 'undefined' || timerStartAt === null) {
+    return 0;
+  }
+  const timeElapsedInMs = Date.now() - parseInt(timerStartAt, 10);
+  const isTimerOver = timeElapsedInMs > TOTAL_DURATION_IN_MS;
+  if (isTimerOver) {
+    return 0;
+  }
+  return Math.round((TOTAL_DURATION_IN_MS - timeElapsedInMs) / 1000);
+};
+
 export const getFirstUrlSection = (url) => {
   return url.replace(/^\/([^/]*).*$/, '$1');
 };
