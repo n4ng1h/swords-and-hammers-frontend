@@ -1,5 +1,6 @@
-// Import SCENE components
 import MainPage from 'scenes/Main';
+import WarRoomPage from 'scenes/WarRoom';
+import LeaderboardPage from 'scenes/Leaderboard';
 
 const routes = [
   {
@@ -8,7 +9,11 @@ const routes = [
   },
   {
     path: '/warroom',
-    component: '',
+    component: <WarRoomPage />,
+  },
+  {
+    path: '/leaderboard',
+    component: <LeaderboardPage />,
   },
 ];
 

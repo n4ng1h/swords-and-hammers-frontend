@@ -1,12 +1,17 @@
 import PropTypes from 'prop-types';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
+import styles from './styles';
 
-const Title = ({ text }) => {
-  return <Typography variant="h2">{text}</Typography>;
+const Title = ({ children }) => {
+  return (
+    <Typography variant="h2" sx={styles.text}>
+      {children}
+    </Typography>
+  );
 };
 
 Title.propTypes = {
-  text: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default Title;
