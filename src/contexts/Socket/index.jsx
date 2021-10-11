@@ -8,6 +8,7 @@ const SocketContext = createContext({
   hasGameEnded: false,
   isRoundActive: false,
   setEndTurn: () => {},
+  currKingdomName: '',
   currRound: 0,
   totalRounds: 0,
   setRoundInfo: (_currRound, _totalRounds) => {},

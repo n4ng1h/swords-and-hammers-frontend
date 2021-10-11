@@ -1,17 +1,32 @@
 import { v4 as uuidv4 } from 'uuid';
 import { axiosInstance } from 'services/utils';
 import { ACTION_TYPE } from 'constant';
+import Content from 'content';
 
 export const fetchRoundInfo = async () => {
   try {
     const { data } = await axiosInstance.get(`/api/v1/games`);
-    const roundInfo = { currRound: 0, totalRounds: 0 };
+    const roundInfo = {
+      currRound: 0,
+      totalRounds: 0,
+      currKingdomName: Content.kingdomNameLoading,
+    };
 
     if (data !== null && typeof data.response !== 'undefined') {
       if (data.response.length > 0) {
         const gameData = data.response[0];
         roundInfo.currRound = gameData.currentRound;
         roundInfo.totalRounds = gameData.totalRound;
+
+        const deviceId = localStorage.getItem('deviceId');
+        if (gameData.participants && deviceId) {
+          const thisPtcp = gameData.participants.filter(
+            (ptcp) => ptcp.uuid === deviceId
+          );
+          if (thisPtcp.length !== 0) {
+            roundInfo.currKingdomName = thisPtcp[0].gameName;
+          }
+        }
       }
     }
     return roundInfo;

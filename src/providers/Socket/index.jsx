@@ -13,6 +13,7 @@ import { checkGameStarted } from 'services/socket';
 import { setTimerStart } from 'services/utils';
 import { fetchRoundInfo } from 'services/api';
 import SocketContext from 'contexts/Socket';
+import Content from 'content';
 
 const SocketProvider = ({ children }) => {
   const history = useHistory();
@@ -35,13 +36,15 @@ const SocketProvider = ({ children }) => {
       }));
     },
 
+    currKingdomName: Content.kingdomNameLoading,
     currRound: 0,
     totalRounds: 0,
-    setRoundInfo: (currRound, totalRounds) => {
+    setRoundInfo: (currRound, totalRounds, currKingdomName) => {
       setData((prevState) => ({
         ...prevState,
         currRound,
         totalRounds,
+        currKingdomName,
       }));
     },
   });
@@ -50,7 +53,11 @@ const SocketProvider = ({ children }) => {
   const getRoundInfo = useCallback(async () => {
     const roundInfo = await fetchRoundInfo();
     if (roundInfo !== null) {
-      data.setRoundInfo(roundInfo.currRound, roundInfo.totalRounds);
+      data.setRoundInfo(
+        roundInfo.currRound,
+        roundInfo.totalRounds,
+        roundInfo.currKingdomName
+      );
     }
   }, [data]);
 
