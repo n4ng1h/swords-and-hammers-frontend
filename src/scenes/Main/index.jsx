@@ -47,8 +47,7 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    const DEV_MODE = true;
-    if ((hasGameStarted && readyToPlay) || (DEV_MODE && readyToPlay)) {
+    if (hasGameStarted && readyToPlay) {
       history.push(`/${gameId}${ROUTE_PATH.warroom}`);
     }
   }, [gameId, hasGameStarted, history, readyToPlay]);
