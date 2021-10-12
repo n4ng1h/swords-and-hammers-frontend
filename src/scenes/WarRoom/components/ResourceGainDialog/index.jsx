@@ -5,7 +5,7 @@ import RawMaterial from 'components/RawMaterials';
 import Content from 'content';
 import styles from './styles';
 
-const TurnEndDialog = ({ open, closeDialog, endTurnGain }) => {
+const ResourceGainDialog = ({ open, closeDialog, endTurnGain }) => {
   return (
     <InfoDialog
       open={open}
@@ -23,7 +23,7 @@ const TurnEndDialog = ({ open, closeDialog, endTurnGain }) => {
   );
 };
 
-TurnEndDialog.propTypes = {
+ResourceGainDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   closeDialog: PropTypes.func.isRequired,
   endTurnGain: PropTypes.shape({
@@ -33,4 +33,4 @@ TurnEndDialog.propTypes = {
   }).isRequired,
 };
 
-export default TurnEndDialog;
+export default ResourceGainDialog;

@@ -7,7 +7,7 @@ import KingdomTitle from 'components/KingdomTitle';
 import ResourceRow from 'scenes/WarRoom/components/ResourceRow';
 import EventLog from 'scenes/WarRoom/components/EventLog';
 import ActionRow from 'scenes/WarRoom/components/ActionRow';
-import TurnEndDialog from 'scenes/WarRoom/components/TurnEndDialog';
+import ResourceGainDialog from 'scenes/WarRoom/components/ResourceGainDialog';
 import Loading from 'components/Loading';
 import {
   RAW_MATERIALS_TEMPLATE,
@@ -85,7 +85,7 @@ const WarRoomPage = () => {
   return (
     <Container sx={styles.root}>
       <Loading open={!isRoundActive} msg={Content.waitingNextRound} />
-      {/* <TurnEndDialog
+      {/* <ResourceGainDialog
         open={!isRoundActive}
         closeDialog={handleCloseTurnEndDialog}
         endTurnGain={endTurnResources}
