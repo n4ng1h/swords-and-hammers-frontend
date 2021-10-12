@@ -1,25 +1,24 @@
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import SocketContext from 'contexts/Socket';
-import ResourceContext from 'contexts/Resource';
 import Action from 'components/Action';
 import CastleImage from 'assets/images/buttons/castle.png';
 import Content from 'content';
 import { ACTION_TYPE } from 'constant';
-import { takeTurn, refreshResourceState, fetchEventLogs } from 'services/api';
+import { takeTurn } from 'services/api';
+import { useSWRConfig } from 'swr';
 
 const BuildCastle = ({ numOwned }) => {
   const { gameId, setEndTurn } = useContext(SocketContext);
-  const { setResourceInfo, setEventLog } = useContext(ResourceContext);
+  const { mutate } = useSWRConfig();
 
   const buildACastle = async () => {
     const buildOutcome = await takeTurn(gameId, ACTION_TYPE.BUILD_CASTLE);
     if (buildOutcome) {
       // Update the resource state
-      const currResourceState = await refreshResourceState(gameId);
-      setResourceInfo(currResourceState);
+      mutate(`/api/v1/scorecard/${gameId}`);
       // Refresh the event log
-      setEventLog(await fetchEventLogs(gameId));
+      mutate(`/api/v1/games/${gameId}/feed`);
       // END THE TURN
       setEndTurn();
     }

@@ -1,25 +1,13 @@
-import { useContext, useEffect } from 'react';
-import SocketContext from 'contexts/Socket';
+import PropTypes from 'prop-types';
 import GameRoundDisplay from 'components/GameRound/Display';
-import { fetchRoundInfo } from 'services/api';
 
-const GameRound = () => {
-  const { currRound, totalRounds, setRoundInfo } = useContext(SocketContext);
-
-  useEffect(() => {
-    const getRoundInfo = async () => {
-      const roundInfo = await fetchRoundInfo();
-      if (roundInfo !== null) {
-        setRoundInfo(roundInfo.currRound, roundInfo.totalRounds);
-      }
-    };
-
-    if (currRound === 0) {
-      getRoundInfo();
-    }
-  }, [setRoundInfo, currRound]);
-
+const GameRound = ({ currRound, totalRounds }) => {
   return <GameRoundDisplay currRound={currRound} maxRounds={totalRounds} />;
+};
+
+GameRound.propTypes = {
+  currRound: PropTypes.number.isRequired,
+  totalRounds: PropTypes.number.isRequired,
 };
 
 export default GameRound;

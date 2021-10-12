@@ -5,7 +5,6 @@ import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import ViewProvider from 'providers/View';
 import SocketProvider from 'providers/Socket';
-import ResourceProvider from 'providers/Resource';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
@@ -14,9 +13,7 @@ ReactDOM.render(
     <BrowserRouter>
       <ViewProvider>
         <SocketProvider>
-          <ResourceProvider>
-            <App />
-          </ResourceProvider>
+          <App />
         </SocketProvider>
       </ViewProvider>
     </BrowserRouter>

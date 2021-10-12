@@ -2,47 +2,34 @@ import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
 import { Typography } from '@mui/material';
 import SocketContext from 'contexts/Socket';
-import ResourceContext from 'contexts/Resource';
 import Action from 'components/Action';
 import Loading from 'components/Loading';
 import AttackImage from 'assets/images/buttons/attack.png';
 import Content from 'content';
 import { ACTION_TYPE, INFO_DIALOG_TYPE } from 'constant';
 import InfoDialog from 'components/InfoDialog';
-import { fetchEventLogs, fetchOpponentList, takeTurn } from 'services/api';
+import { takeTurn } from 'services/api';
+import { useSWRConfig } from 'swr';
 import AttackList from './AttackList';
 import PreAttack from './PreAttack';
 import styles from './styles';
 
 const AttackKingdom = ({ numOwned }) => {
   const { gameId, setEndTurn } = useContext(SocketContext);
-  const { setEventLog } = useContext(ResourceContext);
-  const [isLoading, setIsLoading] = useState(false);
-  const [playerList, setPlayerList] = useState([]);
-  const [oppIdx, setOppIdx] = useState(0);
+  const { mutate } = useSWRConfig();
 
-  const refreshLogs = async () => {
-    setEventLog(await fetchEventLogs(gameId));
+  const [opponent, setOpponent] = useState(null);
+
+  const refreshLogs = () => {
+    mutate(`/api/v1/games/${gameId}/feed`);
   };
 
-  const prepareAttackList = async () => {
-    // Set page to loading
-    setIsLoading(true);
-    const attackStats = await fetchOpponentList(gameId);
-    if (attackStats !== null) {
-      setPlayerList(attackStats);
-    }
-    // Remove the loading screen
-    setIsLoading(false);
-  };
-
-  const [isAttackListOpen, setAttackListOpen] = useState(false);
-  const handleOpenAttackList = async () => {
-    await prepareAttackList();
-    setAttackListOpen(true);
+  const [isAttackListOpen, setIsAttackListOpen] = useState(false);
+  const handleOpenAttackList = () => {
+    setIsAttackListOpen(true);
   };
   const handleCloseAttackList = () => {
-    setAttackListOpen(false);
+    setIsAttackListOpen(false);
   };
 
   const [isPreAttackOpen, setPreAttackOpen] = useState(false);
@@ -51,14 +38,6 @@ const AttackKingdom = ({ numOwned }) => {
   };
   const handleClosePreAttack = () => {
     setPreAttackOpen(false);
-  };
-
-  const checkPreAttackStats = async () => {
-    // Close the AttackList
-    handleCloseAttackList();
-
-    // Open the PreAttack dialog
-    handleOpenPreAttack();
   };
 
   const [infoDialogType, setInfoDialogType] = useState(null);
@@ -71,11 +50,12 @@ const AttackKingdom = ({ numOwned }) => {
     setInfoDialogType(null);
   };
 
+  const [isLoading, setIsLoading] = useState(false);
   const attackAnOpponent = async () => {
     const attackOutcome = await takeTurn(
       gameId,
       ACTION_TYPE.ATTACK,
-      playerList[oppIdx].participantId
+      opponent.participantId
     );
     return attackOutcome;
   };
@@ -93,6 +73,7 @@ const AttackKingdom = ({ numOwned }) => {
       setEndTurn();
       // Else set the attack success dialog
       setInfoDialogType(INFO_DIALOG_TYPE.ATTACKED);
+      setIsAttackListOpen(false);
     }
     // Remove the loading screen
     setIsLoading(false);
@@ -102,7 +83,7 @@ const AttackKingdom = ({ numOwned }) => {
 
   return (
     <div>
-      <Loading open={isLoading} msg={Content.fetchingOppStats} />
+      <Loading open={isLoading} msg={Content.attackingOpp} />
       {infoDialogType ? (
         <InfoDialog
           open={isInfoDialogOpen}
@@ -118,15 +99,14 @@ const AttackKingdom = ({ numOwned }) => {
       <PreAttack
         open={isPreAttackOpen}
         closeDialog={handleClosePreAttack}
-        oppStats={playerList[oppIdx]}
+        oppStats={opponent}
         performAttack={performAttack}
       />
       <AttackList
         open={isAttackListOpen}
         closeDialog={handleCloseAttackList}
-        contentArray={playerList}
-        nextStep={checkPreAttackStats}
-        updateTargetOpponent={setOppIdx}
+        nextStep={handleOpenPreAttack}
+        updateTargetOpponent={setOpponent}
       />
       <Action
         btnImg={AttackImage}

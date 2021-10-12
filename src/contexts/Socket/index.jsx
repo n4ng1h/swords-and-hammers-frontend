@@ -3,15 +3,13 @@ import { createContext } from 'react';
 
 const SocketContext = createContext({
   gameId: '',
-  setGameId: (_gameId) => {},
   hasGameStarted: false,
   hasGameEnded: false,
   isRoundActive: false,
+  isRoundCompleted: false,
   setEndTurn: () => {},
-  currKingdomName: '',
-  currRound: 0,
-  totalRounds: 0,
-  setRoundInfo: (_currRound, _totalRounds) => {},
+  shouldNotifyJoinGame: false,
+  notifyJoinGame: () => {},
 });
 
 export default SocketContext;
