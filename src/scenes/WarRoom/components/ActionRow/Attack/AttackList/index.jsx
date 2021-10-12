@@ -89,15 +89,15 @@ const AttackList = ({ open, closeDialog, updateTargetOpponent, nextStep }) => {
     }
   }, [data, error]);
 
-  useEffect(() => {
-    if (error) {
-      console.log(
-        `Error encountered while fetching /api/v1/games/${gameId}/opponents: ${JSON.stringify(
-          error
-        )}`
-      );
-    }
-  }, [error, gameId]);
+  // useEffect(() => {
+  //   if (error) {
+  //     console.log(
+  //       `Error encountered while fetching /api/v1/games/${gameId}/opponents: ${JSON.stringify(
+  //         error
+  //       )}`
+  //     );
+  //   }
+  // }, [error, gameId]);
 
   const selectTargetOpponent = (oppIdx) => {
     setSelectedRow(oppIdx);

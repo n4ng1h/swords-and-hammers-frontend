@@ -9,7 +9,7 @@ const EventLog = () => {
   const textAreaRef = useRef();
   const { gameId } = useContext(SocketContext);
   const [displayLog, setDisplayLog] = useState([]);
-  const { data, error } = useSWR(`/api/v1/games/${gameId}/feed`, fetcher, {
+  const { data } = useSWR(`/api/v1/games/${gameId}/feed`, fetcher, {
     revalidateOnFocus: false,
   });
 
@@ -19,15 +19,15 @@ const EventLog = () => {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (error) {
-      console.log(
-        `Error encountered while fetching /api/v1/games/${gameId}/feed: ${JSON.stringify(
-          error
-        )}`
-      );
-    }
-  }, [error, gameId]);
+  // useEffect(() => {
+  //   if (error) {
+  //     console.log(
+  //       `Error encountered while fetching /api/v1/games/${gameId}/feed: ${JSON.stringify(
+  //         error
+  //       )}`
+  //     );
+  //   }
+  // }, [error, gameId]);
 
   return (
     <div>

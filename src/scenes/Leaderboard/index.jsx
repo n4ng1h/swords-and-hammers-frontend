@@ -9,13 +9,9 @@ import { fetcher } from 'services/utils';
 const LeaderboardPage = () => {
   const { gameId } = useContext(SocketContext);
   const [leaderboardContent, setLeaderboardContent] = useState([]);
-  const { data, error } = useSWR(
-    `/api/v1/games/${gameId}/leaderBoard`,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-    }
-  );
+  const { data } = useSWR(`/api/v1/games/${gameId}/leaderBoard`, fetcher, {
+    revalidateOnFocus: false,
+  });
 
   useEffect(() => {
     if (data) {
@@ -23,15 +19,15 @@ const LeaderboardPage = () => {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (error) {
-      console.log(
-        `Error encountered while fetching /api/v1/games/${gameId}/leaderBoard: ${JSON.stringify(
-          error
-        )}`
-      );
-    }
-  }, [error, gameId]);
+  // useEffect(() => {
+  //   if (error) {
+  //     console.log(
+  //       `Error encountered while fetching /api/v1/games/${gameId}/leaderBoard: ${JSON.stringify(
+  //         error
+  //       )}`
+  //     );
+  //   }
+  // }, [error, gameId]);
 
   return (
     <InfoDialog

@@ -51,30 +51,30 @@ const WarRoomPage = () => {
   const [currRound, setCurrRound] = useState(0);
   const [totalRounds, setTotalRounds] = useState(0);
   const [kingdomTitle, setKingdomTitle] = useState(Content.kingdomNameLoading);
-  const gameInfo = useSWR(`/api/v1/games/${gameId}`, fetcher, {
+  const { data: gameInfo } = useSWR(`/api/v1/games/${gameId}`, fetcher, {
     revalidateOnFocus: false,
   });
 
   useEffect(() => {
-    if (gameInfo.data) {
-      const roundInfo = transformRoundData(gameInfo.data);
+    if (gameInfo) {
+      const roundInfo = transformRoundData(gameInfo);
       if (roundInfo !== null) {
         setCurrRound(roundInfo.currRound);
         setTotalRounds(roundInfo.totalRounds);
         setKingdomTitle(roundInfo.currKingdomName);
       }
     }
-  }, [gameInfo.data]);
+  }, [gameInfo]);
 
-  useEffect(() => {
-    if (gameInfo.error) {
-      console.log(
-        `Error encountered while fetching /api/v1/games/${gameId}: ${JSON.stringify(
-          gameInfo.error
-        )}`
-      );
-    }
-  }, [gameInfo, gameId]);
+  // useEffect(() => {
+  //   if (gameInfo.error) {
+  //     console.log(
+  //       `Error encountered while fetching /api/v1/games/${gameId}: ${JSON.stringify(
+  //         gameInfo.error
+  //       )}`
+  //     );
+  //   }
+  // }, [gameInfo, gameId]);
 
   // TODO: Update the number of end of turn resources
   // eslint-disable-next-line no-unused-vars
