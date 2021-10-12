@@ -25,7 +25,7 @@ const WarRoomPage = () => {
     BUILT_RESOURCES_TEMPLATE
   );
 
-  const { gameId, isRoundActive } = useContext(SocketContext);
+  const { gameId, isRoundActive, isRoundCompleted } = useContext(SocketContext);
   const { data, error } = useSWR(`/api/v1/scorecard/${gameId}`, fetcher, {
     revalidateOnFocus: false,
   });
@@ -84,7 +84,10 @@ const WarRoomPage = () => {
 
   return (
     <Container sx={styles.root}>
-      <Loading open={!isRoundActive} msg={Content.waitingNextRound} />
+      <Loading
+        open={!isRoundActive || isRoundCompleted}
+        msg={Content.waitingNextRound}
+      />
       {/* <ResourceGainDialog
         open={!isRoundActive}
         closeDialog={handleCloseTurnEndDialog}

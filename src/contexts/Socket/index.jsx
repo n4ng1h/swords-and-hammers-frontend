@@ -3,10 +3,10 @@ import { createContext } from 'react';
 
 const SocketContext = createContext({
   gameId: '',
-  setGameId: (_gameId) => {},
   hasGameStarted: false,
   hasGameEnded: false,
   isRoundActive: false,
+  isRoundCompleted: false,
   setEndTurn: () => {},
   shouldNotifyJoinGame: false,
   notifyJoinGame: () => {},

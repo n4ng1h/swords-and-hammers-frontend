@@ -11,24 +11,24 @@ import {
   GAME_STATUS,
 } from 'constant';
 import checkMatchingGameRoom from 'services/socket';
-import { setTimerStart, fetcher, getTimerLeft } from 'services/utils';
+import {
+  setTimerStart,
+  fetcher,
+  getTimerLeft,
+  getFirstUrlSection,
+} from 'services/utils';
 import SocketContext from 'contexts/Socket';
 import useSWR, { mutate } from 'swr';
 
 const SocketProvider = ({ children }) => {
   const history = useHistory();
   const [gameData, setGameData] = useState({
-    gameId: '',
-    setGameId: (_gameId) => {
-      setGameData((prevState) => ({
-        ...prevState,
-        gameId: _gameId,
-      }));
-    },
+    gameId: getFirstUrlSection(window.location.pathname),
 
     hasGameStarted: false,
     hasGameEnded: false,
     isRoundActive: false,
+    isRoundCompleted: false,
     setEndTurn: () => {
       setGameData((prevState) => ({
         ...prevState,
@@ -45,23 +45,48 @@ const SocketProvider = ({ children }) => {
     },
   });
 
-  const { data, error } = useSWR(`/api/v1/games/${gameData.gameId}`, fetcher, {
-    revalidateOnFocus: false,
-  });
+  const { data: retrievedGameData, error: retrievedGameError } = useSWR(
+    `/api/v1/games/${gameData.gameId}`,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    }
+  );
 
   useEffect(() => {
-    if (data && !error && data !== null) {
+    if (
+      retrievedGameData &&
+      !retrievedGameError &&
+      retrievedGameData !== null
+    ) {
       setGameData((prevState) => ({
         ...prevState,
-        hasGameStarted: data.status === GAME_STATUS.STARTED,
-        hasGameEnded: data.status === GAME_STATUS.ENDED,
+        hasGameStarted: retrievedGameData.status === GAME_STATUS.STARTED,
+        hasGameEnded: retrievedGameData.status === GAME_STATUS.ENDED,
         isRoundActive:
-          data.status === GAME_STATUS.STARTED &&
-          data.status !== GAME_STATUS.ENDED &&
+          retrievedGameData.status === GAME_STATUS.STARTED &&
+          retrievedGameData.status !== GAME_STATUS.ENDED &&
           getTimerLeft(60) > 0,
       }));
     }
-  }, [data, error]);
+  }, [retrievedGameData, retrievedGameError]);
+
+  const { data: gameTurnData, error: gameTurnError } = useSWR(
+    `/api/v1/gameTurn/${gameData.gameId}`,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    }
+  );
+
+  useEffect(() => {
+    if (gameTurnData && !gameTurnError && gameTurnData !== null) {
+      setGameData((prevState) => ({
+        ...prevState,
+        isRoundCompleted: gameTurnData.roundCompleted,
+      }));
+    }
+  }, [gameTurnData, gameTurnError]);
 
   useEffect(() => {
     const socket = SocketIOClient(SERVICES_ENDPOINT);
@@ -96,10 +121,12 @@ const SocketProvider = ({ children }) => {
 
           case SOCKET_EVENT_TYPE.NEXT_ROUND: {
             mutate(`/api/v1/games/${gameData.gameId}`);
+            mutate(`/api/v1/games/${gameData.gameId}/feed`);
             setTimerStart();
             setGameData((prevState) => ({
               ...prevState,
               isRoundActive: true,
+              isRoundCompleted: false,
             }));
             break;
           }
