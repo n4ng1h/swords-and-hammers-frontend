@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import SocketIOClient from 'socket.io-client';
 import {
@@ -17,7 +17,6 @@ import useSWR, { mutate } from 'swr';
 
 const SocketProvider = ({ children }) => {
   const history = useHistory();
-  const socketRef = useRef(SocketIOClient(SERVICES_ENDPOINT));
   const [gameData, setGameData] = useState({
     gameId: '',
     setGameId: (_gameId) => {
@@ -37,11 +36,12 @@ const SocketProvider = ({ children }) => {
       }));
     },
 
+    shouldNotifyJoinGame: false,
     notifyJoinGame: () => {
-      socketRef.current.emit('trigger', {
-        gameId: gameData.gameId,
-        uuid: localStorage.getItem('deviceId'),
-      });
+      setGameData((prevState) => ({
+        ...prevState,
+        shouldNotifyJoinGame: true,
+      }));
     },
   });
 
@@ -64,8 +64,8 @@ const SocketProvider = ({ children }) => {
   }, [data, error]);
 
   useEffect(() => {
-    const intSocketRef = socketRef.current;
-    intSocketRef.on(SOCKET_EVENT, (resp) => {
+    const socket = SocketIOClient(SERVICES_ENDPOINT);
+    socket.on(SOCKET_EVENT, (resp) => {
       if (resp.role === SOCKET_EVENT_ROLE_TYPE.USER) {
         switch (resp.type) {
           case SOCKET_EVENT_TYPE.START_GAME: {
@@ -110,11 +110,18 @@ const SocketProvider = ({ children }) => {
       }
     });
 
+    if (gameData.shouldNotifyJoinGame) {
+      socket.emit('trigger', {
+        gameId: gameData.gameId,
+        uuid: localStorage.getItem('deviceId'),
+      });
+    }
+
     // Cleanup to ensure that we disconnect from the socket
     return () => {
-      intSocketRef.disconnect();
+      socket.disconnect();
     };
-  }, [gameData.gameId, history]);
+  }, [gameData.gameId, history, gameData.shouldNotifyJoinGame]);
 
   return (
     <SocketContext.Provider value={gameData}>{children}</SocketContext.Provider>
