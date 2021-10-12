@@ -1,5 +1,47 @@
 import axios from 'axios';
 import { SERVICES_ENDPOINT } from 'constant';
+import Content from 'content';
+
+export const transformEventLogData = (_logs) => {
+  if (_logs !== null) {
+    let formattedLogs = '';
+    _logs.forEach((entry) => {
+      formattedLogs += `> ${entry.msg}\n\n`;
+    });
+    return formattedLogs;
+  }
+  return _logs;
+};
+
+export const transformRoundData = (data) => {
+  try {
+    const roundInfo = {
+      currRound: 0,
+      totalRounds: 0,
+      currKingdomName: Content.kingdomNameLoading,
+      gameStatus: null,
+    };
+
+    if (data !== null && typeof data !== 'undefined') {
+      roundInfo.currRound = data.currentRound;
+      roundInfo.totalRounds = data.totalRound;
+      roundInfo.gameStatus = data.status;
+
+      const deviceId = localStorage.getItem('deviceId');
+      if (data.participants && deviceId) {
+        const thisPtcp = data.participants.filter(
+          (ptcp) => ptcp.uuid === deviceId
+        );
+        if (thisPtcp.length !== 0) {
+          roundInfo.currKingdomName = thisPtcp[0].gameName;
+        }
+      }
+    }
+    return roundInfo;
+  } catch (error) {
+    return null;
+  }
+};
 
 export const setTimerStart = () => {
   localStorage.removeItem('timerStart');
@@ -32,42 +74,9 @@ export const axiosInstance = axios.create({
   },
 });
 
-async function refreshAccessToken() {
-  try {
-    const body = {
-      accessToken: localStorage.getItem('accessToken'),
-      refreshToken: localStorage.getItem('refreshToken'),
-    };
-    const result = await axios.post(
-      `${SERVICES_ENDPOINT}/api/v1/users/auth/refreshToken`,
-      body
-    );
-
-    if (result.status === 201) {
-      localStorage.setItem('accessToken', result.data.accessToken);
-      localStorage.setItem('refreshToken', result.data.refreshToken);
-      localStorage.setItem(
-        'expiresAt',
-        (Date.now() + 1000 * 60 * 15).toString()
-      );
-    }
-  } catch (e) {
-    localStorage.clearItem('accessToken');
-    localStorage.clearItem('refreshToken');
-    localStorage.clearItem('expiresAt');
-  }
-}
-
 // Intercept every request to check if the access token is expired
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const expiresAt = localStorage.getItem('expiresAt');
-    // eslint-disable-next-line radix
-    const isExpired = Date.now() > parseInt(expiresAt ?? '');
-    if (isExpired) {
-      await refreshAccessToken();
-    }
-
     // eslint-disable-next-line no-param-reassign
     config.headers.Authorization = `Bearer ${localStorage.getItem(
       'accessToken'
@@ -86,3 +95,6 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error.response.data.message.toString());
   }
 );
+
+export const fetcher = (...args) =>
+  axiosInstance.get(...args).then((res) => res.data);

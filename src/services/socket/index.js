@@ -1,4 +1,5 @@
-/* eslint-disable import/prefer-default-export */
-export const checkGameStarted = (currGameId, gameStartedId) => {
-  return currGameId === gameStartedId;
+const checkMatchingGameRoom = (thisGameId, rcvdGameId) => {
+  return thisGameId === rcvdGameId;
 };
+
+export default checkMatchingGameRoom;

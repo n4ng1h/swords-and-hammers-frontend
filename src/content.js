@@ -53,6 +53,7 @@ const Content = {
   waitingGameStart: 'Waiting for game to start...',
   waitingNextRound: 'Waiting for next round to start...',
   leaderboardTitle: 'Top Winners:',
+  attackingOpp: 'Attacking your opponent...',
 };
 
 export default Content;
