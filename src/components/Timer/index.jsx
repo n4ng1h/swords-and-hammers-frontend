@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useContext, useEffect, useRef, useState } from 'react';
 import SocketContext from 'contexts/Socket';
 import MiniBoard from 'components/MiniBoard';
@@ -9,43 +8,43 @@ import { ACTION_TYPE } from 'constant';
 
 const Timer = () => {
   const { gameId, setEndTurn, isRoundActive } = useContext(SocketContext);
-  const [hasTimerStarted, setTimerStarted] = useState(false);
+  const setInProgressRef = useRef(false);
   const [countdownValue, setCountdownValue] = useState(getTimerLeft(60));
   const reduceCountdown = () => {
+    setInProgressRef.current = false;
     setCountdownValue((prevState) => prevState - 1);
   };
   const timerRef = useRef();
 
   // For initializing the timer's starting countdown value
   useEffect(() => {
-    if (isRoundActive && !hasTimerStarted) {
-      setCountdownValue(getTimerLeft(60));
-      setTimerStarted(true);
+    if (isRoundActive) {
+      const checkedCountdownValue = getTimerLeft(60);
+      if (checkedCountdownValue > 0) {
+        setCountdownValue(checkedCountdownValue);
+        setInProgressRef.current = true;
+        // Start the countdown
+        timerRef.current = setInterval(reduceCountdown, 1000);
+      }
     }
-  }, [hasTimerStarted, isRoundActive]);
-
-  // For triggering the countdown
-  useEffect(() => {
-    // If the countdown value is valid, and the timer is not yet started
-    if (countdownValue > 0 && !hasTimerStarted) {
-      // Start the countdown
-      timerRef.current = setInterval(reduceCountdown, 1000);
-    }
-  }, [countdownValue, hasTimerStarted]);
+  }, [isRoundActive]);
 
   // For stopping the countdown
   useEffect(() => {
-    // If we receive 0 or less as the time remaining
-    // OR if the game has ended
     // If we have run out of time
-    if (countdownValue <= 0 && isRoundActive) {
+    // and we are not in the middle of setting a new timer
+    if (countdownValue === 0 && !setInProgressRef.current) {
       // Clear the countdown timer
       clearInterval(timerRef.current);
+
+      // If the round is still active, i.e. No action has been taken
+      if (isRoundActive) {
+        // SKIP TURN
+        takeTurn(gameId, ACTION_TYPE.SKIP);
+      }
+
       // END THE TURN
       setEndTurn();
-      setTimerStarted(false);
-      // // SKIP TURN
-      takeTurn(gameId, ACTION_TYPE.SKIP);
     }
   }, [countdownValue, setEndTurn, isRoundActive, gameId]);
 

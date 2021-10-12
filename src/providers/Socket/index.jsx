@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useCallback, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import SocketIOClient from 'socket.io-client';
 import {
@@ -8,19 +8,19 @@ import {
   SOCKET_EVENT,
   SOCKET_EVENT_ROLE_TYPE,
   SOCKET_EVENT_TYPE,
+  GAME_STATUS,
 } from 'constant';
-import { checkGameStarted } from 'services/socket';
-import { setTimerStart } from 'services/utils';
-import { fetchRoundInfo } from 'services/api';
+import checkMatchingGameRoom from 'services/socket';
+import { setTimerStart, fetcher, getTimerLeft } from 'services/utils';
 import SocketContext from 'contexts/Socket';
-import Content from 'content';
+import useSWR, { mutate } from 'swr';
 
 const SocketProvider = ({ children }) => {
   const history = useHistory();
-  const [data, setData] = useState({
+  const [gameData, setGameData] = useState({
     gameId: '',
     setGameId: (_gameId) => {
-      setData((prevState) => ({
+      setGameData((prevState) => ({
         ...prevState,
         gameId: _gameId,
       }));
@@ -30,40 +30,32 @@ const SocketProvider = ({ children }) => {
     hasGameEnded: false,
     isRoundActive: false,
     setEndTurn: () => {
-      setData((prevState) => ({
+      setGameData((prevState) => ({
         ...prevState,
         isRoundActive: false,
       }));
     },
-
-    currKingdomName: Content.kingdomNameLoading,
-    currRound: 0,
-    totalRounds: 0,
-    setRoundInfo: (currRound, totalRounds, currKingdomName) => {
-      setData((prevState) => ({
-        ...prevState,
-        currRound,
-        totalRounds,
-        currKingdomName,
-      }));
-    },
   });
 
-  // For fetching the round information
-  const getRoundInfo = useCallback(async () => {
-    const roundInfo = await fetchRoundInfo();
-    if (roundInfo !== null) {
-      data.setRoundInfo(
-        roundInfo.currRound,
-        roundInfo.totalRounds,
-        roundInfo.currKingdomName
-      );
-    }
-  }, [data]);
+  const { data, error } = useSWR(`/api/v1/games/${gameData.gameId}`, fetcher, {
+    revalidateOnFocus: false,
+  });
 
   useEffect(() => {
-    getRoundInfo();
-  }, [getRoundInfo]);
+    if (data && !error && data !== null) {
+      // NEED TO DO A CHECK TO SEE IF GAME HAS STARTED + NOT ENDED + TIMER VALID FOR ROUND TO BE ACTIVE
+
+      setGameData((prevState) => ({
+        ...prevState,
+        hasGameStarted: data.status === GAME_STATUS.STARTED,
+        hasGameEnded: data.status === GAME_STATUS.ENDED,
+        isRoundActive:
+          data.status === GAME_STATUS.STARTED &&
+          data.status !== GAME_STATUS.ENDED &&
+          getTimerLeft(60) > 0,
+      }));
+    }
+  }, [data, error]);
 
   useEffect(() => {
     const socket = SocketIOClient(SERVICES_ENDPOINT);
@@ -72,28 +64,34 @@ const SocketProvider = ({ children }) => {
         switch (resp.type) {
           case SOCKET_EVENT_TYPE.START_GAME: {
             setTimerStart();
-            setData((prevState) => ({
+            setGameData((prevState) => ({
               ...prevState,
-              hasGameStarted: checkGameStarted(prevState.gameId, resp.GameId),
+              hasGameStarted: checkMatchingGameRoom(
+                prevState.gameId,
+                resp.GameId
+              ),
               isRoundActive: true,
             }));
             break;
           }
 
           case SOCKET_EVENT_TYPE.GAME_COMPLETED: {
-            setData((prevState) => ({
+            setGameData((prevState) => ({
               ...prevState,
-              hasGameEnded: true,
+              hasGameEnded: checkMatchingGameRoom(
+                prevState.gameId,
+                resp.GameId
+              ),
               isRoundActive: false,
             }));
-            history.push(`/${data.gameId}${ROUTE_PATH.leaderboard}`);
+            history.push(`/${gameData.gameId}${ROUTE_PATH.leaderboard}`);
             break;
           }
 
           case SOCKET_EVENT_TYPE.NEXT_ROUND: {
-            getRoundInfo();
+            mutate(`/api/v1/games/${gameData.gameId}`);
             setTimerStart();
-            setData((prevState) => ({
+            setGameData((prevState) => ({
               ...prevState,
               isRoundActive: true,
             }));
@@ -110,10 +108,10 @@ const SocketProvider = ({ children }) => {
     return () => {
       socket.disconnect();
     };
-  }, [data.gameId, getRoundInfo, history]);
+  }, [gameData.gameId, history]);
 
   return (
-    <SocketContext.Provider value={data}>{children}</SocketContext.Provider>
+    <SocketContext.Provider value={gameData}>{children}</SocketContext.Provider>
   );
 };
 

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Grid } from '@mui/material';
 import TitleBoard from 'components/TitleBoard';
 import GameRound from 'components/GameRound';
@@ -5,7 +6,7 @@ import Timer from 'components/Timer';
 import Content from 'content';
 import styles from './styles';
 
-const HeaderRow = () => {
+const HeaderRow = ({ currRound, totalRounds }) => {
   return (
     <Grid
       container
@@ -15,7 +16,7 @@ const HeaderRow = () => {
       sx={styles.root}
     >
       <Grid item>
-        <GameRound />
+        <GameRound currRound={currRound} totalRounds={totalRounds} />
       </Grid>
       <Grid item sx={styles.middleItem}>
         <TitleBoard>{Content.title}</TitleBoard>
@@ -25,6 +26,11 @@ const HeaderRow = () => {
       </Grid>
     </Grid>
   );
+};
+
+HeaderRow.propTypes = {
+  currRound: PropTypes.number.isRequired,
+  totalRounds: PropTypes.number.isRequired,
 };
 
 export default HeaderRow;
