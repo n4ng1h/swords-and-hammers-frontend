@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import SocketIOClient from 'socket.io-client';
 import {
@@ -17,6 +17,7 @@ import useSWR, { mutate } from 'swr';
 
 const SocketProvider = ({ children }) => {
   const history = useHistory();
+  const socketRef = useRef(SocketIOClient(SERVICES_ENDPOINT));
   const [gameData, setGameData] = useState({
     gameId: '',
     setGameId: (_gameId) => {
@@ -35,6 +36,13 @@ const SocketProvider = ({ children }) => {
         isRoundActive: false,
       }));
     },
+
+    notifyJoinGame: () => {
+      socketRef.current.emit('trigger', {
+        gameId: gameData.gameId,
+        uuid: localStorage.getItem('deviceId'),
+      });
+    },
   });
 
   const { data, error } = useSWR(`/api/v1/games/${gameData.gameId}`, fetcher, {
@@ -43,8 +51,6 @@ const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (data && !error && data !== null) {
-      // NEED TO DO A CHECK TO SEE IF GAME HAS STARTED + NOT ENDED + TIMER VALID FOR ROUND TO BE ACTIVE
-
       setGameData((prevState) => ({
         ...prevState,
         hasGameStarted: data.status === GAME_STATUS.STARTED,
@@ -58,8 +64,8 @@ const SocketProvider = ({ children }) => {
   }, [data, error]);
 
   useEffect(() => {
-    const socket = SocketIOClient(SERVICES_ENDPOINT);
-    socket.on(SOCKET_EVENT, (resp) => {
+    const intSocketRef = socketRef.current;
+    intSocketRef.on(SOCKET_EVENT, (resp) => {
       if (resp.role === SOCKET_EVENT_ROLE_TYPE.USER) {
         switch (resp.type) {
           case SOCKET_EVENT_TYPE.START_GAME: {
@@ -106,7 +112,7 @@ const SocketProvider = ({ children }) => {
 
     // Cleanup to ensure that we disconnect from the socket
     return () => {
-      socket.disconnect();
+      intSocketRef.disconnect();
     };
   }, [gameData.gameId, history]);
 

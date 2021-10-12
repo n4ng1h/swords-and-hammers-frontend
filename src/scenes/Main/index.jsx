@@ -21,7 +21,7 @@ const MainPage = () => {
     setErrorMsg('');
   };
   const [isPageLoading, setIsPageLoading] = useState(false);
-  const { gameId, hasGameStarted } = useContext(SocketContext);
+  const { gameId, hasGameStarted, notifyJoinGame } = useContext(SocketContext);
   const [readyToPlay, setReadyToPlay] = useState(false);
 
   const handleStartGame = async () => {
@@ -31,6 +31,7 @@ const MainPage = () => {
       resetErrorMsg();
       const setupInfo = await joinGame(gameId, kingdomName);
       if (setupInfo !== null) {
+        notifyJoinGame();
         setReadyToPlay(true);
       } else {
         setErrorMsg(Content.cannotJoinError);
