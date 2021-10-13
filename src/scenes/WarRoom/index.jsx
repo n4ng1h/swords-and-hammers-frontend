@@ -1,31 +1,28 @@
-/* eslint-disable no-unused-vars */
 import { useContext, useEffect, useState } from 'react';
-import SocketContext from 'contexts/Socket';
+import RoundContext from 'contexts/Round';
 import { Container, Grid } from '@mui/material';
 import HeaderRow from 'scenes/WarRoom/components/HeaderRow';
 import KingdomTitle from 'components/KingdomTitle';
 import ResourceRow from 'scenes/WarRoom/components/ResourceRow';
 import EventLog from 'scenes/WarRoom/components/EventLog';
 import ActionRow from 'scenes/WarRoom/components/ActionRow';
+// eslint-disable-next-line no-unused-vars
 import ResourceGainDialog from 'scenes/WarRoom/components/ResourceGainDialog';
 import Loading from 'components/Loading';
-import {
-  RAW_MATERIALS_TEMPLATE,
-  BUILT_RESOURCES_TEMPLATE,
-  END_TURN_RESOURCES_TEMPLATE,
-} from 'constant';
+import { RAW_MATERIALS_TEMPLATE, BUILT_RESOURCES_TEMPLATE } from 'constant';
 import Content from 'content';
 import useSWR from 'swr';
 import { fetcher, transformRoundData } from 'services/utils';
 import styles from './styles';
 
 const WarRoomPage = () => {
+  const { gameId, isRoundCompleted, isRoundActive } = useContext(RoundContext);
+
   const [rawMaterials, setRawMaterials] = useState(RAW_MATERIALS_TEMPLATE);
   const [builtResources, setBuiltResources] = useState(
     BUILT_RESOURCES_TEMPLATE
   );
 
-  const { gameId, isRoundActive, isRoundCompleted } = useContext(SocketContext);
   const { data, error } = useSWR(`/api/v1/scorecard/${gameId}`, fetcher, {
     revalidateOnFocus: false,
   });
@@ -36,7 +33,7 @@ const WarRoomPage = () => {
         ...prevState,
         lumber: data.lumber,
         iron: data.iron,
-        gold: data.gold,
+        gold: data.totalWealth,
       }));
 
       setBuiltResources((prevState) => ({
@@ -65,16 +62,6 @@ const WarRoomPage = () => {
       }
     }
   }, [gameInfo]);
-
-  // useEffect(() => {
-  //   if (gameInfo.error) {
-  //     console.log(
-  //       `Error encountered while fetching /api/v1/games/${gameId}: ${JSON.stringify(
-  //         gameInfo.error
-  //       )}`
-  //     );
-  //   }
-  // }, [gameInfo, gameId]);
 
   // TODO: Update the number of end of turn resources
   // eslint-disable-next-line no-unused-vars

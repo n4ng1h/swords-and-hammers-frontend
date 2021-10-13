@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
-import SocketContext from 'contexts/Socket';
+import RoundContext from 'contexts/Round';
 import Action from 'components/Action';
 import VillageImage from 'assets/images/buttons/village.png';
 import Content from 'content';
@@ -9,7 +9,7 @@ import { ACTION_TYPE } from 'constant';
 import { useSWRConfig } from 'swr';
 
 const BuildVillage = ({ numOwned }) => {
-  const { gameId, setEndTurn } = useContext(SocketContext);
+  const { gameId, setEndTurn } = useContext(RoundContext);
   const { mutate } = useSWRConfig();
 
   const buildAVillage = async () => {

@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
-import SocketContext from 'contexts/Socket';
+import RoundContext from 'contexts/Round';
 import InfoDialog from 'components/InfoDialog';
 import LeaderboardTable from 'scenes/Leaderboard/components/Table';
 import Content from 'content';
 import useSWR from 'swr';
 import { fetcher } from 'services/utils';
+import styles from './styles';
 
 const LeaderboardPage = () => {
-  const { gameId } = useContext(SocketContext);
+  const { gameId } = useContext(RoundContext);
   const [leaderboardContent, setLeaderboardContent] = useState([]);
   const { data } = useSWR(`/api/v1/games/${gameId}/leaderBoard`, fetcher, {
     revalidateOnFocus: false,
@@ -30,12 +31,14 @@ const LeaderboardPage = () => {
   // }, [error, gameId]);
 
   return (
-    <InfoDialog
-      open
-      closeDialog={() => {}}
-      title={Content.leaderboardTitle}
-      content={leaderboardContent}
-    />
+    <div style={styles.container}>
+      <InfoDialog
+        open
+        closeDialog={() => {}}
+        title={Content.leaderboardTitle}
+        content={leaderboardContent}
+      />
+    </div>
   );
 };
 

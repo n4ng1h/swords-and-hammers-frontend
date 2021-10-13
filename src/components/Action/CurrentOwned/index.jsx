@@ -6,7 +6,8 @@ import { styled } from '@mui/material/styles';
 import styles from './styles';
 
 const CustomResourceDisplay = styled(Paper, {
-  shouldForwardProp: (prop) => prop !== 'disableNumOwned',
+  shouldForwardProp: (prop) =>
+    prop !== 'disableNumOwned' && prop !== 'isMobile',
 })(({ disableNumOwned, isMobile }) => {
   const styleType = isMobile
     ? styles.ownedContainerMobile

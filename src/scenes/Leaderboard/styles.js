@@ -1,6 +1,6 @@
 const styles = {
-  infoDialogDescText: {
-    color: 'white',
+  container: {
+    height: '100vh',
   },
 };
 
