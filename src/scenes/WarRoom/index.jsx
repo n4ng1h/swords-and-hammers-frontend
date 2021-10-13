@@ -36,7 +36,7 @@ const WarRoomPage = () => {
         ...prevState,
         lumber: data.lumber,
         iron: data.iron,
-        gold: data.gold,
+        gold: data.totalWealth,
       }));
 
       setBuiltResources((prevState) => ({

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { Typography } from '@mui/material';
 import SocketContext from 'contexts/Socket';
 import Action from 'components/Action';
@@ -20,9 +20,9 @@ const AttackKingdom = ({ numOwned }) => {
 
   const [opponent, setOpponent] = useState(null);
 
-  const refreshLogs = () => {
+  const refreshLogs = useCallback(() => {
     mutate(`/api/v1/games/${gameId}/feed`);
-  };
+  }, [gameId, mutate]);
 
   const [isAttackListOpen, setIsAttackListOpen] = useState(false);
   const handleOpenAttackList = () => {

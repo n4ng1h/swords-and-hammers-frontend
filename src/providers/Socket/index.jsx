@@ -101,6 +101,7 @@ const SocketProvider = ({ children }) => {
       if (resp.role === SOCKET_EVENT_ROLE_TYPE.USER) {
         switch (resp.type) {
           case SOCKET_EVENT_TYPE.START_GAME: {
+            console.log('START game event');
             setTimerStart();
             setGameData((prevState) => ({
               ...prevState,
@@ -114,6 +115,7 @@ const SocketProvider = ({ children }) => {
           }
 
           case SOCKET_EVENT_TYPE.GAME_COMPLETED: {
+            console.log('COMPLETED game event');
             setGameData((prevState) => ({
               ...prevState,
               hasGameEnded: checkMatchingGameRoom(
@@ -127,8 +129,7 @@ const SocketProvider = ({ children }) => {
           }
 
           case SOCKET_EVENT_TYPE.NEXT_ROUND: {
-            mutate(`/api/v1/games/${gameData.gameId}`);
-            mutate(`/api/v1/games/${gameData.gameId}/feed`);
+            console.log('NEXT round event');
             setTimerStart();
             setGameData((prevState) => ({
               ...prevState,
@@ -149,6 +150,15 @@ const SocketProvider = ({ children }) => {
       uuid: localStorage.getItem('deviceId'),
     });
   }, [gameData, history, socket]);
+
+  useEffect(() => {
+    if (gameData.isRoundActive && !gameData.isRoundCompleted) {
+      console.log('NEXT ROUND DETECTED: Calling 3 APIs');
+      mutate(`/api/v1/games/${gameData.gameId}`);
+      mutate(`/api/v1/games/${gameData.gameId}/feed`);
+      mutate(`/api/v1/games/${gameData.gameId}/feed`);
+    }
+  }, [gameData.gameId, gameData.isRoundActive, gameData.isRoundCompleted]);
 
   return (
     <SocketContext.Provider value={gameData}>{children}</SocketContext.Provider>
