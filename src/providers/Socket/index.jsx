@@ -44,6 +44,7 @@ const SocketProvider = ({ children }) => {
       }));
     },
   });
+  const [hasNotified, setHasNotified] = useState(false);
 
   const { data: retrievedGameData, error: retrievedGameError } = useSWR(
     `/api/v1/games/${gameData.gameId}`,
@@ -137,18 +138,19 @@ const SocketProvider = ({ children }) => {
       }
     });
 
-    if (gameData.shouldNotifyJoinGame) {
-      socket.emit('trigger', {
+    if (gameData.shouldNotifyJoinGame && !hasNotified) {
+      socket.emit('ADD_PLAYER', {
         gameId: gameData.gameId,
         uuid: localStorage.getItem('deviceId'),
       });
+      setHasNotified(true);
     }
 
     // Cleanup to ensure that we disconnect from the socket
     return () => {
       socket.disconnect();
     };
-  }, [gameData.gameId, history, gameData.shouldNotifyJoinGame]);
+  }, [gameData.gameId, history, hasNotified, gameData.shouldNotifyJoinGame]);
 
   return (
     <SocketContext.Provider value={gameData}>{children}</SocketContext.Provider>
