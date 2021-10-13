@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { Typography } from '@mui/material';
-import SocketContext from 'contexts/Socket';
+import RoundContext from 'contexts/Round';
 import Action from 'components/Action';
 import Loading from 'components/Loading';
 import AttackImage from 'assets/images/buttons/attack.png';
@@ -15,14 +15,14 @@ import PreAttack from './PreAttack';
 import styles from './styles';
 
 const AttackKingdom = ({ numOwned }) => {
-  const { gameId, setEndTurn } = useContext(SocketContext);
+  const { gameId, setEndTurn } = useContext(RoundContext);
   const { mutate } = useSWRConfig();
 
   const [opponent, setOpponent] = useState(null);
 
-  const refreshLogs = () => {
+  const refreshLogs = useCallback(() => {
     mutate(`/api/v1/games/${gameId}/feed`);
-  };
+  }, [gameId, mutate]);
 
   const [isAttackListOpen, setIsAttackListOpen] = useState(false);
   const handleOpenAttackList = () => {

@@ -3,12 +3,14 @@
   background-repeat: no-repeat;
   background-position: bottom right, bottom, right bottom;
   background-size: contain, 100%, cover;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   overflow: auto;
 }
 
 .Background {
   background-color: rgba(52, 2, 134, 0.4);
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   overflow: auto;
 }

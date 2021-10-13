@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
-import SocketContext from 'contexts/Socket';
+import RoundContext from 'contexts/Round';
 import Action from 'components/Action';
 import CastleImage from 'assets/images/buttons/castle.png';
 import Content from 'content';
@@ -9,7 +9,7 @@ import { takeTurn } from 'services/api';
 import { useSWRConfig } from 'swr';
 
 const BuildCastle = ({ numOwned }) => {
-  const { gameId, setEndTurn } = useContext(SocketContext);
+  const { gameId, setEndTurn } = useContext(RoundContext);
   const { mutate } = useSWRConfig();
 
   const buildACastle = async () => {

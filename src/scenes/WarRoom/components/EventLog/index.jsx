@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import SocketContext from 'contexts/Socket';
+import RoundContext from 'contexts/Round';
 import { Paper, TextField } from '@mui/material';
 import useSWR from 'swr';
 import { fetcher, transformEventLogData } from 'services/utils';
@@ -7,7 +7,7 @@ import styles from './styles';
 
 const EventLog = () => {
   const textAreaRef = useRef();
-  const { gameId } = useContext(SocketContext);
+  const { gameId } = useContext(RoundContext);
   const [displayLog, setDisplayLog] = useState([]);
   const { data } = useSWR(`/api/v1/games/${gameId}/feed`, fetcher, {
     revalidateOnFocus: false,
