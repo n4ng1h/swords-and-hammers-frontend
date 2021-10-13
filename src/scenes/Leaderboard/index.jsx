@@ -5,6 +5,7 @@ import LeaderboardTable from 'scenes/Leaderboard/components/Table';
 import Content from 'content';
 import useSWR from 'swr';
 import { fetcher } from 'services/utils';
+import styles from './styles';
 
 const LeaderboardPage = () => {
   const { gameId } = useContext(RoundContext);
@@ -30,12 +31,14 @@ const LeaderboardPage = () => {
   // }, [error, gameId]);
 
   return (
-    <InfoDialog
-      open
-      closeDialog={() => {}}
-      title={Content.leaderboardTitle}
-      content={leaderboardContent}
-    />
+    <div style={styles.container}>
+      <InfoDialog
+        open
+        closeDialog={() => {}}
+        title={Content.leaderboardTitle}
+        content={leaderboardContent}
+      />
+    </div>
   );
 };
 

@@ -23,7 +23,7 @@ const LeaderboardTable = ({ resultsArr }) => {
   return (
     <List>
       {topThree.map((user, idx) => (
-        <ListItem>
+        <ListItem key={user.participantId}>
           <ListItemAvatar>
             <img
               src={idxToImg[idx].img}

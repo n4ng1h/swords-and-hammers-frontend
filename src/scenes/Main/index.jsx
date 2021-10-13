@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import SocketContext from 'contexts/Socket';
+// import SocketContext from 'contexts/Socket';
 import RoundContext from 'contexts/Round';
 import Title from 'components/Title';
 import CustomButton from 'components/CustomButton';
@@ -11,64 +11,64 @@ import Content from 'content';
 import {
   BUTTON_TYPE,
   ROUTE_PATH,
-  SOCKET_EVENT,
-  SOCKET_EVENT_ROLE_TYPE,
-  SOCKET_EVENT_TYPE,
+  // SOCKET_EVENT,
+  // SOCKET_EVENT_ROLE_TYPE,
+  // SOCKET_EVENT_TYPE,
 } from 'constant';
-import { setTimerStart } from 'services/utils';
+// import { setTimerStart } from 'services/utils';
 import isKingdomNameValid from 'services/validation';
 import { joinGame } from 'services/api';
 import styles from './styles';
 
 const MainPage = () => {
   const history = useHistory();
-  const socket = useContext(SocketContext);
   const {
     gameId,
     hasGameStarted,
     notifyJoinGame,
-    setGameStart,
-    setGameEnd,
-    setNextRound,
+    // setGameStart,
+    // setGameEnd,
+    // setNextRound,
   } = useContext(RoundContext);
-  useEffect(() => {
-    if (socket) {
-      console.log(socket);
-      socket.on(SOCKET_EVENT, (resp) => {
-        if (resp.role === SOCKET_EVENT_ROLE_TYPE.USER) {
-          switch (resp.type) {
-            case SOCKET_EVENT_TYPE.START_GAME: {
-              console.log('START game event');
-              setTimerStart();
-              setGameStart(resp.GameId);
-              break;
-            }
 
-            case SOCKET_EVENT_TYPE.GAME_COMPLETED: {
-              console.log('COMPLETED game event');
-              setGameEnd(resp.GameId);
-              break;
-            }
+  // const socket = useContext(SocketContext);
+  // useEffect(() => {
+  //   if (socket) {
+  //     socket.on(SOCKET_EVENT, (resp) => {
+  //       if (resp.role === SOCKET_EVENT_ROLE_TYPE.USER) {
+  //         switch (resp.type) {
+  //           case SOCKET_EVENT_TYPE.START_GAME: {
+  //             console.log('START game event');
+  //             setTimerStart();
+  //             setGameStart(resp.GameId);
+  //             break;
+  //           }
 
-            case SOCKET_EVENT_TYPE.NEXT_ROUND: {
-              console.log('NEXT round event');
-              setTimerStart();
-              setNextRound();
-              break;
-            }
+  //           case SOCKET_EVENT_TYPE.GAME_COMPLETED: {
+  //             console.log('COMPLETED game event');
+  //             setGameEnd(resp.GameId);
+  //             break;
+  //           }
 
-            default:
-              break;
-          }
-        }
-      });
+  //           case SOCKET_EVENT_TYPE.NEXT_ROUND: {
+  //             console.log('NEXT round event');
+  //             setTimerStart();
+  //             setNextRound();
+  //             break;
+  //           }
 
-      socket.emit('ADD_PLAYER', {
-        gameId,
-        uuid: localStorage.getItem('deviceId'),
-      });
-    }
-  }, [gameId, history, setGameEnd, setGameStart, setNextRound, socket]);
+  //           default:
+  //             break;
+  //         }
+  //       }
+  //     });
+
+  //     socket.emit('ADD_PLAYER', {
+  //       gameId,
+  //       uuid: localStorage.getItem('deviceId'),
+  //     });
+  //   }
+  // }, [gameId, history, setGameEnd, setGameStart, setNextRound, socket]);
 
   const [kingdomName, setKingdomName] = useState('');
 

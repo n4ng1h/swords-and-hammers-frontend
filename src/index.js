@@ -4,21 +4,21 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import ViewProvider from 'providers/View';
-import SocketProvider from 'providers/Socket';
 import RoundProvider from 'providers/Round';
+import SocketProvider from 'providers/Socket';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <ViewProvider>
-        <SocketProvider>
+      <SocketProvider>
+        <ViewProvider>
           <RoundProvider>
             <App />
           </RoundProvider>
-        </SocketProvider>
-      </ViewProvider>
+        </ViewProvider>
+      </SocketProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
