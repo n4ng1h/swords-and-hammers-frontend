@@ -23,6 +23,8 @@ const Timer = () => {
       if (checkedCountdownValue > 0) {
         setCountdownValue(checkedCountdownValue);
         setInProgressRef.current = true;
+        // Clear any current countdowns
+        clearInterval(timerRef.current);
         // Start the countdown
         timerRef.current = setInterval(reduceCountdown, 1000);
       }

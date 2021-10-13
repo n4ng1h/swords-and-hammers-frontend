@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import SocketIOClient from 'socket.io-client';
 import {
   ROUTE_PATH,
-  SERVICES_ENDPOINT,
   SOCKET_EVENT,
   SOCKET_EVENT_ROLE_TYPE,
   SOCKET_EVENT_TYPE,
@@ -21,6 +19,7 @@ import SocketContext from 'contexts/Socket';
 import useSWR, { mutate } from 'swr';
 
 const SocketProvider = ({ children }) => {
+  const { socket } = useContext(SocketContext);
   const history = useHistory();
   const [gameData, setGameData] = useState({
     gameId: getFirstUrlSection(window.location.pathname),
@@ -44,7 +43,15 @@ const SocketProvider = ({ children }) => {
       }));
     },
   });
-  const [hasNotified, setHasNotified] = useState(false);
+
+  // Cleanup function to ensure that the socket is disconnected
+  // once the window is closed
+  useEffect(() => {
+    window.addEventListener('beforeunload', (ev) => {
+      ev.preventDefault();
+      socket.disconnect();
+    });
+  }, [socket]);
 
   const { data: retrievedGameData, error: retrievedGameError } = useSWR(
     `/api/v1/games/${gameData.gameId}`,
@@ -90,7 +97,6 @@ const SocketProvider = ({ children }) => {
   }, [gameTurnData, gameTurnError]);
 
   useEffect(() => {
-    const socket = SocketIOClient(SERVICES_ENDPOINT);
     socket.on(SOCKET_EVENT, (resp) => {
       if (resp.role === SOCKET_EVENT_ROLE_TYPE.USER) {
         switch (resp.type) {
@@ -138,19 +144,11 @@ const SocketProvider = ({ children }) => {
       }
     });
 
-    if (gameData.shouldNotifyJoinGame && !hasNotified) {
-      socket.emit('ADD_PLAYER', {
-        gameId: gameData.gameId,
-        uuid: localStorage.getItem('deviceId'),
-      });
-      setHasNotified(true);
-    }
-
-    // Cleanup to ensure that we disconnect from the socket
-    return () => {
-      socket.disconnect();
-    };
-  }, [gameData.gameId, history, hasNotified, gameData.shouldNotifyJoinGame]);
+    socket.emit('ADD_PLAYER', {
+      gameId: gameData.gameId,
+      uuid: localStorage.getItem('deviceId'),
+    });
+  }, [gameData, history, socket]);
 
   return (
     <SocketContext.Provider value={gameData}>{children}</SocketContext.Provider>
