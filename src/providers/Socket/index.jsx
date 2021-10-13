@@ -58,7 +58,7 @@ const SocketProvider = ({ children }) => {
   );
 
   useEffect(() => {
-    console.log("test");
+    console.log('test');
     if (
       retrievedGameData &&
       !retrievedGameError &&
@@ -151,9 +151,15 @@ const SocketProvider = ({ children }) => {
 
     // Cleanup to ensure that we disconnect from the socket
     return () => {
-      socket.disconnect();
+      socket.socket.disconnect();
     };
-  }, [gameData.gameId, history, hasNotified, gameData.shouldNotifyJoinGame]);
+  }, [
+    gameData.gameId,
+    history,
+    hasNotified,
+    gameData.shouldNotifyJoinGame,
+    socket.socket,
+  ]);
 
   return (
     <SocketContext.Provider value={gameData}>{children}</SocketContext.Provider>
