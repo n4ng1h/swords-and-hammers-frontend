@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-// import SocketIOClient from 'socket.io-client';
 import {
   ROUTE_PATH,
-  // SERVICES_ENDPOINT,
   SOCKET_EVENT,
   SOCKET_EVENT_ROLE_TYPE,
   SOCKET_EVENT_TYPE,
@@ -21,10 +19,8 @@ import SocketContext from 'contexts/Socket';
 import useSWR, { mutate } from 'swr';
 
 const SocketProvider = ({ children }) => {
+  const { socket } = useContext(SocketContext);
   const history = useHistory();
-  const socket = useContext(SocketContext);
-  // const socket = SocketIOClient(SERVICES_ENDPOINT);
-  // console.log(socket)
   const [gameData, setGameData] = useState({
     gameId: getFirstUrlSection(window.location.pathname),
 
@@ -47,7 +43,6 @@ const SocketProvider = ({ children }) => {
       }));
     },
   });
-  const [hasNotified, setHasNotified] = useState(false);
 
   const { data: retrievedGameData, error: retrievedGameError } = useSWR(
     `/api/v1/games/${gameData.gameId}`,
@@ -58,7 +53,6 @@ const SocketProvider = ({ children }) => {
   );
 
   useEffect(() => {
-    console.log('test');
     if (
       retrievedGameData &&
       !retrievedGameError &&
@@ -94,7 +88,7 @@ const SocketProvider = ({ children }) => {
   }, [gameTurnData, gameTurnError]);
 
   useEffect(() => {
-    socket.socket.on(SOCKET_EVENT, (resp) => {
+    socket.on(SOCKET_EVENT, (resp) => {
       if (resp.role === SOCKET_EVENT_ROLE_TYPE.USER) {
         switch (resp.type) {
           case SOCKET_EVENT_TYPE.START_GAME: {
@@ -141,25 +135,16 @@ const SocketProvider = ({ children }) => {
       }
     });
 
-    if (gameData.shouldNotifyJoinGame && !hasNotified) {
-      socket.socket.emit('ADD_PLAYER', {
-        gameId: gameData.gameId,
-        uuid: localStorage.getItem('deviceId'),
-      });
-      setHasNotified(true);
-    }
+    socket.emit('ADD_PLAYER', {
+      gameId: gameData.gameId,
+      uuid: localStorage.getItem('deviceId'),
+    });
 
     // Cleanup to ensure that we disconnect from the socket
     return () => {
-      socket.socket.disconnect();
+      socket.disconnect();
     };
-  }, [
-    gameData.gameId,
-    history,
-    hasNotified,
-    gameData.shouldNotifyJoinGame,
-    socket.socket,
-  ]);
+  }, [gameData, history, socket]);
 
   return (
     <SocketContext.Provider value={gameData}>{children}</SocketContext.Provider>
