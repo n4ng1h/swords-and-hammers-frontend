@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import SocketIOClient from 'socket.io-client';
+// import SocketIOClient from 'socket.io-client';
 import {
   ROUTE_PATH,
-  SERVICES_ENDPOINT,
+  // SERVICES_ENDPOINT,
   SOCKET_EVENT,
   SOCKET_EVENT_ROLE_TYPE,
   SOCKET_EVENT_TYPE,
@@ -22,6 +22,9 @@ import useSWR, { mutate } from 'swr';
 
 const SocketProvider = ({ children }) => {
   const history = useHistory();
+  const socket = useContext(SocketContext);
+  // const socket = SocketIOClient(SERVICES_ENDPOINT);
+  // console.log(socket)
   const [gameData, setGameData] = useState({
     gameId: getFirstUrlSection(window.location.pathname),
 
@@ -55,6 +58,7 @@ const SocketProvider = ({ children }) => {
   );
 
   useEffect(() => {
+    console.log("test");
     if (
       retrievedGameData &&
       !retrievedGameError &&
@@ -90,8 +94,7 @@ const SocketProvider = ({ children }) => {
   }, [gameTurnData, gameTurnError]);
 
   useEffect(() => {
-    const socket = SocketIOClient(SERVICES_ENDPOINT);
-    socket.on(SOCKET_EVENT, (resp) => {
+    socket.socket.on(SOCKET_EVENT, (resp) => {
       if (resp.role === SOCKET_EVENT_ROLE_TYPE.USER) {
         switch (resp.type) {
           case SOCKET_EVENT_TYPE.START_GAME: {
@@ -139,7 +142,7 @@ const SocketProvider = ({ children }) => {
     });
 
     if (gameData.shouldNotifyJoinGame && !hasNotified) {
-      socket.emit('ADD_PLAYER', {
+      socket.socket.emit('ADD_PLAYER', {
         gameId: gameData.gameId,
         uuid: localStorage.getItem('deviceId'),
       });

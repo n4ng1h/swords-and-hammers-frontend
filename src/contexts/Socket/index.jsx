@@ -1,6 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { createContext } from 'react';
+import socketio from "socket.io-client";
+import {
+  SERVICES_ENDPOINT,
+} from 'constant';
 
+const socket = socketio.connect(SERVICES_ENDPOINT);
 const SocketContext = createContext({
   gameId: '',
   hasGameStarted: false,
@@ -10,6 +15,7 @@ const SocketContext = createContext({
   setEndTurn: () => {},
   shouldNotifyJoinGame: false,
   notifyJoinGame: () => {},
+  socket,
 });
 
 export default SocketContext;

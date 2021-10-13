@@ -11,7 +11,8 @@ export const ACTION_TYPE = {
   ATTACK: 'ATTACK',
   SKIP: 'SKIPPED',
 };
-export const SERVICES_ENDPOINT = 'https://api.kingdom.higglerslab.com';
+// export const SERVICES_ENDPOINT = 'https://api.kingdom.higglerslab.com';
+export const SERVICES_ENDPOINT = 'http://localhost:3050';
 export const SOCKET_EVENT_ROLE_TYPE = {
   USER: 'USER',
 };
