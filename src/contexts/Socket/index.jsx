@@ -4,8 +4,6 @@ import SocketIOClient, { io } from 'socket.io-client';
 import { SERVICES_ENDPOINT } from 'constant';
 
 const socket = io(SERVICES_ENDPOINT);
-// const socket = SocketIOClient.connect(SERVICES_ENDPOINT);
-// const socket = socketio.connect(SERVICES_ENDPOINT);
 
 const SocketContext = createContext({
   gameId: '',

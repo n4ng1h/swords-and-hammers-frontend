@@ -44,6 +44,15 @@ const SocketProvider = ({ children }) => {
     },
   });
 
+  // Cleanup function to ensure that the socket is disconnected
+  // once the window is closed
+  useEffect(() => {
+    window.addEventListener('beforeunload', (ev) => {
+      ev.preventDefault();
+      socket.disconnect();
+    });
+  }, [socket]);
+
   const { data: retrievedGameData, error: retrievedGameError } = useSWR(
     `/api/v1/games/${gameData.gameId}`,
     fetcher,
@@ -139,11 +148,6 @@ const SocketProvider = ({ children }) => {
       gameId: gameData.gameId,
       uuid: localStorage.getItem('deviceId'),
     });
-
-    // Cleanup to ensure that we disconnect from the socket
-    return () => {
-      socket.socket.disconnect();
-    };
   }, [gameData, history, socket]);
 
   return (
