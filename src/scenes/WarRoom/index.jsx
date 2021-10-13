@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useContext, useEffect, useState } from 'react';
 import SocketContext from 'contexts/Socket';
+import RoundContext from 'contexts/Round';
 import { Container, Grid } from '@mui/material';
 import HeaderRow from 'scenes/WarRoom/components/HeaderRow';
 import KingdomTitle from 'components/KingdomTitle';
@@ -13,19 +14,73 @@ import {
   RAW_MATERIALS_TEMPLATE,
   BUILT_RESOURCES_TEMPLATE,
   END_TURN_RESOURCES_TEMPLATE,
+  BUTTON_TYPE,
+  ROUTE_PATH,
+  SOCKET_EVENT,
+  SOCKET_EVENT_ROLE_TYPE,
+  SOCKET_EVENT_TYPE,
 } from 'constant';
 import Content from 'content';
 import useSWR from 'swr';
-import { fetcher, transformRoundData } from 'services/utils';
+import { fetcher, transformRoundData, setTimerStart } from 'services/utils';
 import styles from './styles';
 
 const WarRoomPage = () => {
+  const {
+    gameId,
+    hasGameStarted,
+    notifyJoinGame,
+    setGameStart,
+    setGameEnd,
+    setNextRound,
+    isRoundCompleted,
+    isRoundActive,
+  } = useContext(RoundContext);
+  const socket = useContext(SocketContext);
+  useEffect(() => {
+    if (socket) {
+      console.log(socket);
+      socket.on(SOCKET_EVENT, (resp) => {
+        if (resp.role === SOCKET_EVENT_ROLE_TYPE.USER) {
+          switch (resp.type) {
+            case SOCKET_EVENT_TYPE.START_GAME: {
+              console.log('START game event');
+              setTimerStart();
+              setGameStart(resp.GameId);
+              break;
+            }
+
+            case SOCKET_EVENT_TYPE.GAME_COMPLETED: {
+              console.log('COMPLETED game event');
+              setGameEnd(resp.GameId);
+              break;
+            }
+
+            case SOCKET_EVENT_TYPE.NEXT_ROUND: {
+              console.log('NEXT round event');
+              setTimerStart();
+              setNextRound();
+              break;
+            }
+
+            default:
+              break;
+          }
+        }
+      });
+
+      socket.emit('ADD_PLAYER', {
+        gameId,
+        uuid: localStorage.getItem('deviceId'),
+      });
+    }
+  }, [gameId, setGameEnd, setGameStart, setNextRound]);
+
   const [rawMaterials, setRawMaterials] = useState(RAW_MATERIALS_TEMPLATE);
   const [builtResources, setBuiltResources] = useState(
     BUILT_RESOURCES_TEMPLATE
   );
 
-  const { gameId, isRoundActive, isRoundCompleted } = useContext(SocketContext);
   const { data, error } = useSWR(`/api/v1/scorecard/${gameId}`, fetcher, {
     revalidateOnFocus: false,
   });

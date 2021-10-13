@@ -12,7 +12,7 @@ import {
   ListItemText,
   Radio,
 } from '@mui/material';
-import SocketContext from 'contexts/Socket';
+import RoundContext from 'contexts/Round';
 import ViewContext from 'contexts/View';
 import CloseIcon from '@mui/icons-material/Close';
 import CustomButton from 'components/CustomButton';
@@ -72,7 +72,7 @@ RowItemRenderer.propTypes = {
 
 const AttackList = ({ open, closeDialog, updateTargetOpponent, nextStep }) => {
   const { isMobileView } = useContext(ViewContext);
-  const { gameId } = useContext(SocketContext);
+  const { gameId } = useContext(RoundContext);
   const [isListReady, setIsListReady] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [opponentList, setOpponentList] = useState([]);

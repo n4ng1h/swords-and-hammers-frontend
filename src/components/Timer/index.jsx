@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import SocketContext from 'contexts/Socket';
+import RoundContext from 'contexts/Round';
 import MiniBoard from 'components/MiniBoard';
 import { getTimerLeft } from 'services/utils';
 import Content from 'content';
@@ -7,7 +7,7 @@ import { takeTurn } from 'services/api';
 import { ACTION_TYPE } from 'constant';
 
 const Timer = () => {
-  const { gameId, setEndTurn, isRoundActive } = useContext(SocketContext);
+  const { gameId, setEndTurn, isRoundActive } = useContext(RoundContext);
   const setInProgressRef = useRef(false);
   const [countdownValue, setCountdownValue] = useState(getTimerLeft(60));
   const reduceCountdown = () => {
