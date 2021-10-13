@@ -151,7 +151,7 @@ const SocketProvider = ({ children }) => {
 
     // Cleanup to ensure that we disconnect from the socket
     return () => {
-      socket.disconnect();
+      // socket.socket.disconnect();
     };
   }, [gameData.gameId, history, hasNotified, gameData.shouldNotifyJoinGame]);
 
